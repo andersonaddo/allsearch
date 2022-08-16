@@ -1,0 +1,12 @@
+<!-- https://dev.to/arthurdenner/how-to-implement-a-search-shortcut-opensearch-on-any-website-3e9i -->
+<!-- https://www.algolia.com/doc/guides/building-search-ui/ui-and-ux-patterns/opensearch/react/ -->
+<!-- https://developer.mozilla.org/en-US/docs/Web/OpenSearch -->
+
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>Allsearch</ShortName>
+  <Description>A webpage that makes it easier to try other search engines</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="16" height="16" type="image/x-icon">https://allsear.ch/favicon.ico</Image>
+  <Url type="text/html" method="get" template="https://allsear.ch/search?q={searchTerms}" />
+  <moz:SearchForm>https://allsear.ch/search</moz:SearchForm>
+</OpenSearchDescription>

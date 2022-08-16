@@ -1,0 +1,161 @@
+import { DarkMode, HStack, IconButton, Input, Link, Text, VStack } from "@chakra-ui/react";
+import { useEffect, useMemo, useState } from "react";
+import { BsFillGearFill } from "react-icons/bs";
+import { IoMdRefresh } from "react-icons/io";
+import { BiHelpCircle } from "react-icons/bi";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import AllsearchTitle from "../components/AllsearchTitle";
+import { BackgroundedContainer } from "../components/BackgroundedContainer";
+import { MacroChip, SearchEngineChip } from "../components/HotbarChips";
+import { fetchBackgroundImage, useBackgroundImageInfo } from "../utils/backgroundProvider";
+import { getHotbar } from "../utils/storage";
+import { getMacroFromId, getSearchEngineFromId } from "../utils/utils";
+
+
+export const MainSearch = () => {
+  const [query, setQuery] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const [getLastUnfocusedKey, setLastUnfocusedKey] = useState("");
+  const [searchParams] = useSearchParams();
+  const backgroundInfo = useBackgroundImageInfo();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setQuery(searchParams.get("q") || "")
+  }, [searchParams])
+
+
+
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent): void => {
+      if (!e) return;
+      if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey) return;
+      if (!isTyping) setLastUnfocusedKey(e.key)
+    };
+
+    document.addEventListener("keydown", handleKeyDown, false);
+    return () => document.removeEventListener("keydown", handleKeyDown, false);
+  }, [isTyping]);
+
+
+  const hotbarEngines = useMemo(() => {
+    const entries = Object.entries(getHotbar());
+    const engineEntries = [];
+    for (const val of entries) {
+      if (val[1] !== "engine") continue
+      const engine = getSearchEngineFromId(val[0]);
+      if (engine) engineEntries.push(engine)
+    }
+    return engineEntries;
+  }, [])
+
+
+  const hotbarMacros = useMemo(() => {
+    const entries = Object.entries(getHotbar());
+    const macroEntries = [];
+    for (const val of entries) {
+      if (val[1] !== "macro") continue
+      const macro = getMacroFromId(val[0]);
+      if (macro) macroEntries.push(macro)
+    }
+    return macroEntries;
+  }, [])
+
+
+
+  function clearLastUnfocusedKey() {
+    setLastUnfocusedKey("")
+  }
+
+
+  return (
+    <DarkMode>
+      <BackgroundedContainer centerContent maxWidth="100%" height="100vh" >
+        <VStack height="100%" width="70%" spacing={"20"}>
+
+          <HStack
+            position="absolute"
+            right="24px"
+            top="24px">
+            <IconButton
+              aria-label="New Image"
+              icon={<IoMdRefresh />}
+              onClick={() => fetchBackgroundImage(true)}
+              variant='ghost'
+            />
+            <IconButton
+              aria-label="About Allsearch"
+              icon={<BiHelpCircle />}
+              onClick={() => navigate("./about")}
+              variant='ghost'
+            />
+            <IconButton
+              aria-label="Settings"
+              icon={<BsFillGearFill />}
+              onClick={() => navigate("./settings")}
+              variant='ghost'
+            />
+          </HStack>
+
+
+          <Text
+            position="absolute"
+            left="24px"
+            bottom="24px"
+            fontSize="sm"
+          >
+            <Link isExternal href={backgroundInfo?.sourceUrl}>
+              {backgroundInfo?.author}
+            </Link> from {backgroundInfo?.sourceName}
+          </Text>
+
+          <AllsearchTitle />
+
+          <Input
+            autoFocus
+            placeholder='Type something in!'
+            fontSize={"18px"}
+            fontWeight="bold"
+            borderColor='gray.200'
+            height={"60px"}
+            backdropFilter="blur(3px)"
+            border='2px'
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") e.target.blur();
+            }}
+            onBlur={() => {
+              setLastUnfocusedKey("")
+              setIsTyping(false)
+            }}
+            onFocus={() => {
+              setLastUnfocusedKey("")
+              setIsTyping(true)
+            }}
+          />
+
+          <HStack>
+            {
+              hotbarEngines.map((x, i) => <SearchEngineChip
+                key={i}
+                actionItem={x}
+                userSearchQuery={query}
+                lastTypedUnfocusedKey={getLastUnfocusedKey}
+                onActivatedByShortcut={clearLastUnfocusedKey} />)
+            }
+            {
+              hotbarMacros.map((x, i) => <MacroChip
+                key={i}
+                actionItem={x}
+                userSearchQuery={query}
+                lastTypedUnfocusedKey={getLastUnfocusedKey}
+                onActivatedByShortcut={clearLastUnfocusedKey} />)
+            }
+          </HStack>
+        </VStack>
+      </BackgroundedContainer>
+    </DarkMode>
+  );
+}
