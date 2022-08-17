@@ -1,6 +1,6 @@
-import { Button, Container, Heading, List, ListIcon, ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import { Button, Container, Heading, List, ListIcon, ListItem, Text } from "@chakra-ui/react";
+import { MdCheckCircle } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { MdCheckCircle } from "react-icons/md"
 
 export const About = () => {
 
