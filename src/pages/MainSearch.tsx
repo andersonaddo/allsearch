@@ -2,7 +2,6 @@ import { DarkMode, HStack, IconButton, Input, Link, Text, VStack } from "@chakra
 import { useEffect, useMemo, useState } from "react";
 import { BsFillGearFill } from "react-icons/bs";
 import { IoMdRefresh } from "react-icons/io";
-import { BiHelpCircle } from "react-icons/bi";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import AllsearchTitle from "../components/AllsearchTitle";
 import { BackgroundedContainer } from "../components/BackgroundedContainer";
@@ -10,6 +9,7 @@ import { MacroChip, SearchEngineChip } from "../components/HotbarChips";
 import { fetchBackgroundImage, useBackgroundImageInfo } from "../utils/backgroundProvider";
 import { getHotbar } from "../utils/storage";
 import { getMacroFromId, getSearchEngineFromId } from "../utils/utils";
+import InfoButton from "../components/InfoButton";
 
 
 export const MainSearch = () => {
@@ -84,12 +84,7 @@ export const MainSearch = () => {
               onClick={() => fetchBackgroundImage(true)}
               variant='ghost'
             />
-            <IconButton
-              aria-label="About Allsearch"
-              icon={<BiHelpCircle />}
-              onClick={() => navigate("./about")}
-              variant='ghost'
-            />
+            <InfoButton />
             <IconButton
               aria-label="Settings"
               icon={<BsFillGearFill />}

@@ -7,6 +7,7 @@ import { MainSearch } from "./pages/MainSearch"
 import { Settings } from "./pages/Settings"
 import * as serviceWorker from "./serviceWorker"
 import theme from "./styling/theme"
+import { recordSession } from "./utils/onboardingManager"
 import { isInDevMove } from "./utils/utils"
 
 const container = document.getElementById("root")
@@ -18,6 +19,8 @@ const root = ReactDOM.createRoot(container)
 //sessions use that option. This clears that cache so the next session will 
 //still start with the system theme.
 localStorage.removeItem("chakra-ui-color-mode")
+
+recordSession()
 
 root.render(
   <ChakraProvider theme={theme}>

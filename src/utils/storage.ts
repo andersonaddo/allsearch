@@ -1,6 +1,7 @@
 import { defaultHotbar } from "../data/defaultSearchEngines";
 import { Hotbar, HotbarEngineType, MacroDefinitionWithId, MacroId, MacroSet, SearchEngineDefinitionWithId, SearchEngineId, SearchEngineSet } from "../data/searchEngineTypes";
 import { BackgroundInfo } from "./backgroundProvider";
+import { defaultSessionAggregationInfo, SessionAggregationInfo } from "./onboardingManager";
 
 export const getHotbar = (): Hotbar => {
     const list = localStorage.getItem("hotbar");
@@ -78,4 +79,14 @@ export const getStoredBackgroundInfo = () : BackgroundInfo | null => {
 
 export const setStoredBackgroundInfo = (info: BackgroundInfo): void => {
     localStorage.setItem("backgroundInfo", JSON.stringify(info));
+}
+
+export const getSessionAggregationInfo = () : SessionAggregationInfo => {
+    const info = localStorage.getItem("onboardingSessionAggInfo");
+    if (!info) return defaultSessionAggregationInfo;
+    return JSON.parse(info);
+}
+
+export const setSessionAggregationInfo = (info: SessionAggregationInfo): void => {
+    localStorage.setItem("onboardingSessionAggInfo", JSON.stringify(info));
 }
