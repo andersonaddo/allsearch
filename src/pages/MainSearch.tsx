@@ -1,5 +1,5 @@
 import { DarkMode, HStack, IconButton, Input, Link, Text, VStack } from "@chakra-ui/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BsFillGearFill } from "react-icons/bs";
 import { IoMdRefresh } from "react-icons/io";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -19,6 +19,7 @@ export const MainSearch = () => {
   const [searchParams] = useSearchParams();
   const backgroundInfo = useBackgroundImageInfo();
   const navigate = useNavigate();
+  const initializedWithURLSearchQuery = useRef(!!searchParams.get("q"))
 
   useEffect(() => {
     setQuery(searchParams.get("q") || "")
@@ -108,7 +109,7 @@ export const MainSearch = () => {
           <AllsearchTitle />
 
           <Input
-            autoFocus
+            autoFocus = {!initializedWithURLSearchQuery.current}
             placeholder='Type something in!'
             fontSize={"18px"}
             fontWeight="bold"
