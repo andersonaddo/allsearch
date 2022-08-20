@@ -9,6 +9,7 @@ import * as serviceWorker from "./serviceWorker"
 import theme from "./styling/theme"
 import { recordSession } from "./utils/onboardingManager"
 import { isInDevMove } from "./utils/utils"
+import "./styling/main.css";
 
 const container = document.getElementById("root")
 if (!container) throw new Error('Failed to find the root element');

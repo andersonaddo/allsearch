@@ -1,0 +1,15 @@
+/* For the BackgroundedContainer.tsx */
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* For MainSearch.tsx */
+.mainSearchInfo {
+    opacity: 1;
+    transition: opacity 0.5s
+}
+
+.mainSearchInfo.hide {
+    opacity: 0;
+}

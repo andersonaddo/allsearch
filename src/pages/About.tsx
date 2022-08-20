@@ -1,5 +1,5 @@
 import { Button, Container, Heading, List, ListIcon, ListItem, Text, Link } from "@chakra-ui/react";
-import { MdCheckCircle, MdWarning } from "react-icons/md";
+import { MdCheckCircle, MdWarning, MdInfo } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 export const About = () => {
@@ -30,25 +30,33 @@ export const About = () => {
 
         <ListItem fontSize={"large"}>
           <ListIcon as={MdCheckCircle} color='green.500' />
-          Activate search engines by clicking on them or using their <b>shortcuts</b> (indicated by underlined text or []).
+          Activate search engines or macros by clicking on them or using their <b>shortcuts</b> (indicated by the []). <br />
+          For example: If Bing is in your hotbar and you want to use it, type in a query, press enter, then press b.
         </ListItem>
 
         <ListItem fontSize={"large"}>
           <ListIcon as={MdCheckCircle} color='green.500' />
           If you want to make Allsearch your default engine, our template is
-          <b>https://allsear.ch/search?q=%s</b>
+          <b> https://allsear.ch/search?q=%s</b>
         </ListItem>
 
         <ListItem fontSize={"large"}>
           <ListIcon as={MdWarning} color='red.500' />
-          Keep in mind that some browsers will mistake engines activated by macros as popups and block them.<br/>
-          You can find more about that from 
+          Keep in mind that some browsers will mistake engines activated by macros as popups and block them.<br />
+          You can find more about that from
           <Link isExternal color='teal.500' href="https://support.google.com/chrome/answer/95472?hl=en&co=GENIE.Platform%3DDesktop"> Chrome's docs </Link>
-          and 
+          and
           <Link isExternal color='teal.500' href="https://support.mozilla.org/en-US/kb/pop-blocker-settings-exceptions-troubleshooting"> Firefox's docs </Link>
           (only read the first few paragraphs).
         </ListItem>
+
+
+        <ListItem fontSize={"large"}>
+          <ListIcon as={MdInfo} color='blue.500' />
+          Any ideas, questions or concerns, email <b> hello [at] allsear.ch </b>
+        </ListItem>
       </List>
+
 
       <Button onClick={() => navigate("/")} colorScheme="green" marginTop={"16px"}>Back</Button>
     </Container>

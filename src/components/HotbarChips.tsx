@@ -18,16 +18,7 @@ const HotbarChipBase: React.FC<BaseChipProps> = (props) => {
 
     const formatName = useCallback(() => {
         const { name, shortcut } = props.actionItem
-        const indexOfShortcut = name.toLowerCase().indexOf(shortcut)
-        if (indexOfShortcut === -1) {
-            return <Text>{name} ({shortcut})</Text>
-        } else {
-            const firstHalf = name.substring(0, indexOfShortcut)
-            const token = name.substring(indexOfShortcut, indexOfShortcut + 1)
-            const secondHalf = name.substring(indexOfShortcut + 1, name.length)
-
-            return <Text>{firstHalf}<u>{token}</u>{secondHalf}</Text>
-        }
+        return <Text>{name} [{shortcut}]</Text>
     }, [props.actionItem])
 
 
@@ -43,13 +34,15 @@ const HotbarChipBase: React.FC<BaseChipProps> = (props) => {
             border='2px'
             borderColor='gray.200'
             height="fit-content"
+            minWidth="fit-content"
             borderRadius="2xl"
             padding="8px"
             onMouseEnter={hoverFlag.on}
             onMouseLeave={hoverFlag.off}
-            backgroundColor={isHovered ? "grey" : undefined}
+            backgroundColor={isHovered ? "rgba(50, 50, 50, 0.8)" : undefined}
             onClick={props.activationFunc}
             backdropFilter="blur(3px)"
+            margin={"8px"}
         >
             <EngineOrMacroLogo
                 size={35}
@@ -68,7 +61,7 @@ interface EngineChipProps {
     actionItem: SearchEngineDefinition
     userSearchQuery: string
     lastTypedUnfocusedKey: string;
-    onActivatedByShortcut: () => void
+    onActivatedByShortcut: () => void,
 }
 
 //Would have liked to wrap these in a memo, but then the clicking functionality 

@@ -1,7 +1,6 @@
 import { Container, ContainerProps } from "@chakra-ui/react";
 import * as React from "react";
 import { PropsWithChildren, useEffect, useState } from "react";
-import "../styling/BackgroundContainer.css";
 import { useBackgroundImageInfo } from "../utils/backgroundProvider";
 import { findOptimalOverlayOpacity, RGBColor } from "../utils/imageContrast";
 
@@ -67,7 +66,7 @@ export const BackgroundedContainer: React.FC<PropsWithChildren<ContainerProps>> 
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "cover",
                 animationFillMode: "forwards",
-                //Keyframes for fade-in defined in BackgroundContainer.css
+                //Keyframes for fade-in defined in Main.css
                 animation: `fade-in ${fadeTime}s ease`,
                 filter: `blur(${blur}px)`,
             }}

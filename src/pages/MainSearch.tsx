@@ -1,4 +1,4 @@
-import { DarkMode, HStack, IconButton, Input, Link, Text, VStack } from "@chakra-ui/react";
+import { DarkMode, Flex, HStack, IconButton, Input, Link, Text, VStack } from "@chakra-ui/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BsFillGearFill } from "react-icons/bs";
 import { IoMdRefresh } from "react-icons/io";
@@ -6,23 +6,26 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import AllsearchTitle from "../components/AllsearchTitle";
 import { BackgroundedContainer } from "../components/BackgroundedContainer";
 import { MacroChip, SearchEngineChip } from "../components/HotbarChips";
+import InfoButton from "../components/InfoButton";
 import { fetchBackgroundImage, useBackgroundImageInfo } from "../utils/backgroundProvider";
 import { getHotbar } from "../utils/storage";
 import { getMacroFromId, getSearchEngineFromId } from "../utils/utils";
-import InfoButton from "../components/InfoButton";
 
 
 export const MainSearch = () => {
   const [query, setQuery] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [getLastUnfocusedKey, setLastUnfocusedKey] = useState("");
+  const [infoTextVisible, setInfoTextVisible] = useState(false)
   const [searchParams] = useSearchParams();
   const backgroundInfo = useBackgroundImageInfo();
   const navigate = useNavigate();
   const initializedWithURLSearchQuery = useRef(!!searchParams.get("q"))
 
+
   useEffect(() => {
     setQuery(searchParams.get("q") || "")
+    setInfoTextVisible(initializedWithURLSearchQuery.current)
   }, [searchParams])
 
 
@@ -108,31 +111,40 @@ export const MainSearch = () => {
 
           <AllsearchTitle />
 
-          <Input
-            autoFocus = {!initializedWithURLSearchQuery.current}
-            placeholder='Type something in!'
-            fontSize={"18px"}
-            fontWeight="bold"
-            borderColor='gray.200'
-            height={"60px"}
-            backdropFilter="blur(3px)"
-            border='2px'
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") e.target.blur();
-            }}
-            onBlur={() => {
-              setLastUnfocusedKey("")
-              setIsTyping(false)
-            }}
-            onFocus={() => {
-              setLastUnfocusedKey("")
-              setIsTyping(true)
-            }}
-          />
+          <VStack width="100%">
+            <Input
+              autoFocus={!initializedWithURLSearchQuery.current}
+              placeholder='Type something in!'
+              fontSize={"18px"}
+              fontWeight="bold"
+              borderColor='gray.200'
+              height={"60px"}
+              backdropFilter="blur(3px)"
+              border='2px'
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") e.target.blur();
+              }}
+              onBlur={() => {
+                setLastUnfocusedKey("")
+                setIsTyping(false)
+                setInfoTextVisible(true)
+              }}
+              onFocus={() => {
+                setLastUnfocusedKey("")
+                setIsTyping(true)
+              }}
+            />
 
-          <HStack>
+              <Text className={`mainSearchInfo ${infoTextVisible ? undefined : "hide"}`}>
+                Click an engine or press it's shortcut on your keyboard (letter in square brackets)
+              </Text>
+
+          </VStack>
+
+
+          <Flex direction="row" flexWrap={"wrap"} justifyContent="center">
             {
               hotbarEngines.map((x, i) => <SearchEngineChip
                 key={i}
@@ -149,7 +161,7 @@ export const MainSearch = () => {
                 lastTypedUnfocusedKey={getLastUnfocusedKey}
                 onActivatedByShortcut={clearLastUnfocusedKey} />)
             }
-          </HStack>
+          </Flex>
         </VStack>
       </BackgroundedContainer>
     </DarkMode>

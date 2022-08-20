@@ -18,6 +18,10 @@ type PartialUnsplashResponseType = Array<{
         regular: string
         small: string
         thumb: string
+    },
+    links: {
+        self: string
+        html: string
     }
     user: {
         id: string
@@ -70,7 +74,7 @@ export const fetchBackgroundFromUnplash = async (): Promise<BackgroundInfo> => {
     return {
         url: url,
         author: results.data.at(chosenIndex)?.user?.name || "",
-        sourceUrl: results.data.at(chosenIndex)?.user?.links.html || "",
+        sourceUrl: results.data.at(chosenIndex)?.links?.html || "",
         timestamp: new Date().getTime(),
         sourceName: "Unsplash"
     }
