@@ -8,7 +8,7 @@ import { Settings } from "./pages/Settings"
 import * as serviceWorker from "./serviceWorker"
 import theme from "./styling/theme"
 import { recordSession } from "./utils/onboardingManager"
-import { isInDevMove } from "./utils/utils"
+import { isInDevMode } from "./utils/utils"
 import "./styling/main.css";
 
 const container = document.getElementById("root")
@@ -45,7 +45,7 @@ serviceWorker.unregister()
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-if (isInDevMove()) {
-  reportWebVitals(console.log);
+if (isInDevMode()) {
+  //reportWebVitals(console.log);
 }
 

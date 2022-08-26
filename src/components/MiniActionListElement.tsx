@@ -1,32 +1,33 @@
 import { Checkbox, Container, Flex, Text } from "@chakra-ui/react";
-import { SearchEngineDefinitionWithId, SearchEngineId } from "../data/searchEngineTypes";
+import { MacroDefinitionWithId, SearchEngineDefinitionWithId, SearchEngineId } from "../types/searchEngineTypes";
 import { EngineOrMacroLogo } from "./EngineOrMacroLogo";
 
-type MacroListElementProps = {
-    engine: SearchEngineDefinitionWithId
+type ActionListElementProps = {
+    action: SearchEngineDefinitionWithId | MacroDefinitionWithId
     isChecked: boolean,
     onCheckStateChanged: (newStateChecked: boolean, id: SearchEngineId) => void
+    isMacro?: boolean
 }
 
-export const MacroModalEngineListElement: React.FC<MacroListElementProps> = (props) => {
+export const MiniActionListElement: React.FC<ActionListElementProps> = (props) => {
 
     return (
         <Container maxWidth={"90%"}>
             <Flex direction="row">
                 <Checkbox
                     isChecked={props.isChecked}
-                    onChange={event => props.onCheckStateChanged(event.target.checked, props.engine.id)}
+                    onChange={event => props.onCheckStateChanged(event.target.checked, props.action.id)}
                 />
 
                 <EngineOrMacroLogo
                     size={20}
-                    info={props.engine}
+                    info={props.action}
                     marginRight="16px"
                     marginLeft="16px"
-                    isMacro={true}
+                    isMacro={props.isMacro}
                 />
 
-                <Text marginRight="16px" > {props.engine.name} </Text>
+                <Text marginRight="16px" > {props.action.name} </Text>
 
             </Flex>
         </Container>

@@ -2,7 +2,7 @@ import { Checkbox, Container, Flex, Heading, IconButton, Text } from "@chakra-ui
 import { useMemo } from "react";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
-import { MacroDefinitionWithId } from "../data/searchEngineTypes";
+import { MacroDefinitionWithId } from "../types/searchEngineTypes";
 import { addToHotbar, getHotbar, removeFromHotbar, removeMacro } from "../utils/storage";
 import { EngineOrMacroLogo } from "./EngineOrMacroLogo";
 

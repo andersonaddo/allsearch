@@ -1,8 +1,9 @@
 import { Center, Text, useBoolean } from "@chakra-ui/react";
 import * as React from "react";
 import { useCallback, useEffect } from "react";
-import { MacroDefinition, SearchEngineDefinition } from "../data/searchEngineTypes";
-import { activateMacro, activateSearchEngines as activateSearchEngine } from "../utils/utils";
+import { MacroDefinition, SearchEngineDefinition } from "../types/searchEngineTypes";
+import { generateRuleActivationInfo } from "../utils/ruleActivation";
+import { activateMacro, activateSearchEngine } from "../utils/utils";
 import { EngineOrMacroLogo } from "./EngineOrMacroLogo";
 
 interface BaseChipProps {
@@ -69,7 +70,10 @@ interface EngineChipProps {
 export const SearchEngineChip: React.FC<EngineChipProps> = (props) => {
     return (
         <HotbarChipBase
-            activationFunc={() => activateSearchEngine(props.userSearchQuery, props.actionItem)}
+            activationFunc={() => {
+                const rulesInfo = generateRuleActivationInfo(props.userSearchQuery)
+                activateSearchEngine(rulesInfo.finalQuery, props.actionItem)
+            }}
             actionItem={props.actionItem}
             lastTypedUnfocusedKey={props.lastTypedUnfocusedKey}
             isMacro={false}
@@ -88,7 +92,10 @@ interface MacroChipProps {
 export const MacroChip: React.FC<MacroChipProps> = (props) => {
     return (
         <HotbarChipBase
-            activationFunc={() => activateMacro(props.userSearchQuery, props.actionItem)}
+            activationFunc={() => {
+                const rulesInfo = generateRuleActivationInfo(props.userSearchQuery)
+                activateMacro(rulesInfo.finalQuery, props.actionItem)
+            }}
             actionItem={props.actionItem}
             lastTypedUnfocusedKey={props.lastTypedUnfocusedKey}
             isMacro={true}

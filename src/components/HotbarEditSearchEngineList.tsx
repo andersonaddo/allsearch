@@ -1,8 +1,8 @@
-import { Button, Container, Heading, useDisclosure, VStack } from "@chakra-ui/react";
+import { Button, Container, Heading, useDisclosure, VStack, Text } from "@chakra-ui/react";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { customSearchEnginesTemplate, defaultSearchEngineCategories } from "../data/defaultSearchEngines";
-import { SearchEngineCategoryId, SearchEngineDefinitionWithId, SearchEngineSet } from "../data/searchEngineTypes";
+import { SearchEngineCategoryId, SearchEngineDefinitionWithId, SearchEngineSet } from "../types/searchEngineTypes";
 import { getCustomSearchEngineList } from "../utils/storage";
 import { SearchEngineListElement } from "./HotbarEditSearchEngineListElement";
 import SearchEngineEditModal from "./SearchEngineEditModal";
@@ -51,7 +51,9 @@ export const SearchEngineList: React.FC<SearchEngineListProps> = (props) => {
 
     return (
         <Container centerContent maxWidth={"100%"}>
-            <Heading size="lg" margin="8px 0px 16px 0px">{category.description}</Heading>
+            <Heading size="lg" margin="8px 0px 0px 0px">{category.description}</Heading>
+            <Text margin="0px 0px 16px 0px">Check the checkbox next to an engine to add it to your hotbar</Text>
+
 
             {category.isCustomCategory && (
                 <Button onClick={onSearchEngineCreatedRequested}>Add</Button>

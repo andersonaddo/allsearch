@@ -36,8 +36,19 @@ export const About = () => {
 
         <ListItem fontSize={"large"}>
           <ListIcon as={MdCheckCircle} color='green.500' />
+          <b>Create rules</b> that can automatically replace text in your searches (example: turn @w to site:wikipedia.com) <br />
+          or launch macros/engines when certain text is present in your search (example: launch Bing Maps when "near me" is present). <br />
+        </ListItem>
+
+        <ListItem fontSize={"large"}>
+          <ListIcon as={MdCheckCircle} color='green.500' />
           If you want to make Allsearch your default engine, our template is
           <b> https://allsear.ch/search?q=%s</b>
+        </ListItem>
+
+        <ListItem fontSize={"large"}>
+          <ListIcon as={MdCheckCircle} color='green.500' />
+          You can also export and import your Allsearch configurations for backing up and sharing!
         </ListItem>
 
         <ListItem fontSize={"large"}>

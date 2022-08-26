@@ -6,11 +6,11 @@ import {
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { defaultSearchEngineCategories } from "../data/defaultSearchEngines";
-import { MacroId, EngineShortcut, SearchEngineId, MacroDefinitionWithId, SearchEngineSet } from "../data/searchEngineTypes";
+import { MacroId, EngineShortcut, SearchEngineId, MacroDefinitionWithId, SearchEngineSet } from "../types/searchEngineTypes";
 import { addMacro, getCustomSearchEngineList } from "../utils/storage";
 import { isUrl, isValidShortcut } from "../utils/utils";
 import { EngineOrMacroLogo } from "./EngineOrMacroLogo";
-import { MacroModalEngineListElement } from "./MacroModalEngineListElement";
+import { MiniActionListElement } from "./MiniActionListElement";
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -198,8 +198,8 @@ const MacroModal: React.FC<ModalProps> = (props) => {
                         >
                             <VStack width={"100%"} spacing="8px" >
                                 {Object.entries(exhaustiveSearchEngineList).map(engine => {
-                                    return <MacroModalEngineListElement
-                                        engine={{ ...engine[1], id: engine[0] }}
+                                    return <MiniActionListElement
+                                        action={{ ...engine[1], id: engine[0] }}
                                         key={engine[0]}
                                         isChecked={selectedSearchEngines[engine[0]] ?? false}
                                         onCheckStateChanged={onEngineSelectionChanged}

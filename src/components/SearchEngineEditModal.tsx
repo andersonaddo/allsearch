@@ -5,7 +5,7 @@ import {
 } from "@chakra-ui/react";
 import * as React from "react";
 import { useState } from "react";
-import { EngineShortcut, QueryType, SearchEngineDefinitionWithId } from "../data/searchEngineTypes";
+import { EngineShortcut, QueryType, SearchEngineDefinitionWithId } from "../types/searchEngineTypes";
 import { isUrl } from "../utils/utils";
 import { EngineOrMacroLogo } from "./EngineOrMacroLogo";
 import { v4 as uuidv4 } from 'uuid';

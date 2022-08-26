@@ -1,6 +1,6 @@
 import { Image, ImageProps } from "@chakra-ui/react";
 import * as React from "react";
-import { SearchEngineDefinition, MacroDefinition } from "../data/searchEngineTypes";
+import { SearchEngineDefinition, MacroDefinition } from "../types/searchEngineTypes";
 import { RequireAtLeastOne } from "../utils/utils";
 
 type EngineOrMacroIconPropsFull = {

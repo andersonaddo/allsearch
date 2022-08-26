@@ -1,5 +1,5 @@
 import { defaultSearchEngineCategories } from "../data/defaultSearchEngines";
-import { MacroDefinition, SearchEngineDefinition } from "../data/searchEngineTypes";
+import { MacroDefinition, SearchEngineDefinition } from "../types/searchEngineTypes";
 import { getCustomSearchEngineList, getMacros } from "./storage";
 
 //https://stackoverflow.com/a/49725198
@@ -10,8 +10,16 @@ export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> =
         [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>
     }[Keys]
 
+
+export type EnrichTypeWithId<T> = T & { id: string }
+
+//https://stackoverflow.com/a/61132308
+export type DeepPartial<T> = T extends object ? {
+    [P in keyof T]?: DeepPartial<T[P]>;
+} : T;
+
 //https://create-react-app.dev/docs/adding-custom-environment-variables/
-export const isInDevMove = (): boolean => {
+export const isInDevMode = (): boolean => {
     return process.env.NODE_ENV === 'development';
 }
 
@@ -51,7 +59,7 @@ export const isValidShortcut = (s: string): boolean => {
 }
 
 
-export const activateSearchEngines = (query: string, engine: SearchEngineDefinition) => {
+export const activateSearchEngine = (query: string, engine: SearchEngineDefinition) => {
     if (query.trim() === "") return;
     const completedQuery = engine.query.replace("{searchTerms}", encodeURIComponent(query))
     window.open(completedQuery, '_blank');
@@ -61,7 +69,7 @@ export const activateMacro = (query: string, macro: MacroDefinition) => {
     for (const engineId in macro.engines) {
         const engine = getSearchEngineFromId(engineId);
         if (!engine) continue;
-        activateSearchEngines(query, engine)
+        activateSearchEngine(query, engine)
     }
 }
 

@@ -3,11 +3,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { BsFillGearFill } from "react-icons/bs";
 import { IoMdRefresh } from "react-icons/io";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import ActiveRulesInfoText from "../components/ActiveRulesInfoText";
 import AllsearchTitle from "../components/AllsearchTitle";
 import { BackgroundedContainer } from "../components/BackgroundedContainer";
 import { MacroChip, SearchEngineChip } from "../components/HotbarChips";
 import InfoButton from "../components/InfoButton";
 import { fetchBackgroundImage, useBackgroundImageInfo } from "../utils/backgroundProvider";
+import { autoActivateEnginesFromRules } from "../utils/ruleActivation";
 import { getHotbar } from "../utils/storage";
 import { getMacroFromId, getSearchEngineFromId } from "../utils/utils";
 
@@ -24,7 +26,9 @@ export const MainSearch = () => {
 
 
   useEffect(() => {
-    setQuery(searchParams.get("q") || "")
+    const queryFromUrl = searchParams.get("q") || ""
+    setQuery(queryFromUrl)
+    autoActivateEnginesFromRules(queryFromUrl);
     setInfoTextVisible(initializedWithURLSearchQuery.current)
   }, [searchParams])
 
@@ -98,16 +102,18 @@ export const MainSearch = () => {
           </HStack>
 
 
-          <Text
-            position="absolute"
-            left="24px"
-            bottom="24px"
-            fontSize="sm"
-          >
-            <Link isExternal href={backgroundInfo?.sourceUrl}>
-              {backgroundInfo?.author}
-            </Link> from {backgroundInfo?.sourceName}
-          </Text>
+          {!!backgroundInfo &&
+            <Text
+              position="absolute"
+              left="24px"
+              bottom="24px"
+              fontSize="sm">
+              <Link isExternal href={backgroundInfo?.sourceUrl}>
+                {backgroundInfo?.author}
+              </Link> from {backgroundInfo?.sourceName}
+            </Text>
+          }
+
 
           <AllsearchTitle />
 
@@ -124,7 +130,9 @@ export const MainSearch = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") e.target.blur();
+                if (e.key !== "Enter") return;
+                autoActivateEnginesFromRules(query);
+                e.target.blur();
               }}
               onBlur={() => {
                 setLastUnfocusedKey("")
@@ -137,9 +145,11 @@ export const MainSearch = () => {
               }}
             />
 
-              <Text className={`mainSearchInfo ${infoTextVisible ? undefined : "hide"}`}>
-                Click an engine or press it's shortcut on your keyboard (letter in square brackets)
-              </Text>
+            <Text className={`mainSearchInfo ${infoTextVisible ? undefined : "hide"}`}>
+              Click an engine or press it's shortcut on your keyboard (letter in square brackets)
+            </Text>
+
+            <ActiveRulesInfoText />
 
           </VStack>
 

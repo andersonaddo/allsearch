@@ -1,10 +1,4 @@
-import { Hotbar, SearchEngineCategoryDefinition, SearchEngineCategoryId } from "./searchEngineTypes"
-
-export const defaultHotbar: Hotbar = {
-    google: "engine",
-    yahoo: "engine",
-    bing: "engine",
-}
+import { SearchEngineCategoryDefinition, SearchEngineCategoryId } from "../types/searchEngineTypes"
 
 export const customSearchEnginesTemplate: SearchEngineCategoryDefinition = {
     title: "Custom",

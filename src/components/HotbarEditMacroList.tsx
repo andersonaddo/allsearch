@@ -1,7 +1,7 @@
-import { Button, Container, Heading, useDisclosure, VStack } from "@chakra-ui/react";
+import { Button, Container, Heading, useDisclosure, VStack, Text} from "@chakra-ui/react";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { MacroDefinitionWithId, MacroSet } from "../data/searchEngineTypes";
+import { MacroDefinitionWithId, MacroSet } from "../types/searchEngineTypes";
 import { getMacros } from "../utils/storage";
 import { MacroListElement } from "./HotbarEditMacroListElement";
 import MacroEditModal from "./MacroEditModal";
@@ -36,11 +36,13 @@ export const MacroList: React.FC = (props) => {
             <Heading size="lg" margin="8px 0px 16px 0px">
                 Search Engine Macros
             </Heading>
-            <Heading as="h4" size="sm" margin="0px 0px 16px 0px">
+            <Heading as="h4" size="sm">
                 Use these to define sets of search engines you want to activate at once.
                 <br />
                 For example, define a combination you'd want to use simultaneously when looking for images.
             </Heading>
+
+            <Text margin="0px 0px 16px 0px">Check the checkbox next to a macro to add it to your hotbar</Text>
 
             <Button onClick={onSearchEngineCreatedRequested}>Add</Button>
 
