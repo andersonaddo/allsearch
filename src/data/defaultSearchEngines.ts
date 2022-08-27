@@ -72,7 +72,14 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 query: "https://you.com/search?q={searchTerms}",
                 logoUrl: "https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/mw1hgegq2viixdiq6qbd",
                 description: "You.com is an ad-free, private search engine."
-            }
+            },
+            naver: {
+                name: "Naver",
+                shortcut: "n",
+                query: "https://search.naver.com/search.naver?query={searchTerms}",
+                logoUrl: "https://play-lh.googleusercontent.com/Kbu0747Cx3rpzHcSbtM1zDriGFG74zVbtkPmVnOKpmLCS59l7IuKD5M3MKbaq_nEaZM=w240-h480-rw",
+                description: "The most popular search tool and web portal in South Korea"
+            },
         }
     },
     images: {

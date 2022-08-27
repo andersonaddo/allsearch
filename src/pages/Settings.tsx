@@ -35,11 +35,7 @@ export const Settings = () => {
 
       <Tabs variant='enclosed' isLazy align="center" flex={1} defaultIndex={defaultIndex.current}>
         <TabList>
-          {
-            Object.values(defaultSearchEngineCategories).map(category => {
-              return <Tab key={category.title}>{category.title}</Tab>
-            })
-          }
+          <Tab>Built-in Engines</Tab>
           <Tab>Custom Engines</Tab>
           <Tab>Macros</Tab>
           <Tab>Rules</Tab>
@@ -48,15 +44,28 @@ export const Settings = () => {
         </TabList>
 
         <TabPanels>
-          {
-            Object.entries(defaultSearchEngineCategories).map(category => {
-              return (
-                <TabPanel key={category[1].title}>
-                  <SearchEngineList key={category[0]} categoryId={category[0]} />
-                </TabPanel>
-              )
-            })
-          }
+          <TabPanel>
+            <Tabs>
+              <TabList>
+                {
+                  Object.values(defaultSearchEngineCategories).map(category => {
+                    return <Tab key={category.title}>{category.title}</Tab>
+                  })
+                }
+              </TabList>
+              <TabPanels>
+                {
+                  Object.entries(defaultSearchEngineCategories).map(category => {
+                    return (
+                      <TabPanel key={category[1].title}>
+                        <SearchEngineList key={category[0]} categoryId={category[0]} />
+                      </TabPanel>
+                    )
+                  })
+                }
+              </TabPanels>
+            </Tabs>
+          </TabPanel>
 
           <TabPanel>
             <SearchEngineList categoryId={"custom"} />
