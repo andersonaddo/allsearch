@@ -10,4 +10,9 @@ export type ConfigExport = {
     activeRules: ActiveRules
 }
 
+export type NonFatalImportErrors = {
+    nonExistentEnginesInHotbar: number,
+    nonExistentMacrosInHotbar: number
+}
+
 export type ConfigImport = DeepPartial<ConfigExport>

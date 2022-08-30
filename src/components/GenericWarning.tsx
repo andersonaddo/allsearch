@@ -5,7 +5,9 @@ import {
 import * as React from "react";
 
 interface WarningProps {
-    message: string
+    message?: string
+    title?: string
+    children?: JSX.Element
     isOpen: boolean,
     onClose: () => void,
     onConfirm: () => void
@@ -26,11 +28,12 @@ const GenericWarningDialogue: React.FC<WarningProps> = (props) => {
             <AlertDialogOverlay>
                 <AlertDialogContent>
                     <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                        Are you sure?
+                        {props.title ?? "Are you sure?"}
                     </AlertDialogHeader>
 
                     <AlertDialogBody whiteSpace={"pre-wrap"}>
                         {props.message}
+                        {props.children}
                     </AlertDialogBody>
 
                     <AlertDialogFooter>

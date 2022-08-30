@@ -32,8 +32,8 @@ export const MainSearch = () => {
     setQuery(queryFromUrl)
     autoActivateEnginesFromRules(queryFromUrl);
     setInfoTextVisible(initializedWithURLSearchQuery.current)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
@@ -79,11 +79,16 @@ export const MainSearch = () => {
 
   return (
     <DarkMode>
-      <BackgroundedContainer centerContent maxWidth="100%" height="100vh" >
-        <VStack height="100%" width="70%" spacing={"20"}>
+      <BackgroundedContainer
+        centerContent
+        maxWidth="100%"
+        height="100vh"
+      >
+        <VStack height="100%" width="85%" spacing={"20"}>
 
           <HStack
-            position="absolute"
+            position="fixed"
+            zIndex={2} //Important so that the InfoButton popover renders over the search bar
             right="24px"
             top="24px">
             <IconButton
@@ -104,7 +109,7 @@ export const MainSearch = () => {
 
           {!!backgroundInfo &&
             <Text
-              position="absolute"
+              position="fixed"
               left="24px"
               bottom="24px"
               fontSize="sm">
@@ -117,7 +122,7 @@ export const MainSearch = () => {
 
           <AllsearchTitle />
 
-          <VStack width="100%">
+          <VStack width="85%">
             <Input
               autoFocus={!initializedWithURLSearchQuery.current}
               placeholder='Type something in!'
@@ -136,7 +141,7 @@ export const MainSearch = () => {
                 //Navigating to the same component (so there will be no component initialization)
                 //so that the url can stay in sync with the query (this is also not pushing
                 //onto the browser history)
-                navigate(`/search?q=${encodeURIComponent(query)}`, {replace: true})
+                navigate(`/search?q=${encodeURIComponent(query)}`, { replace: true })
               }}
               onBlur={() => {
                 setLastUnfocusedKey("")
@@ -149,8 +154,8 @@ export const MainSearch = () => {
               }}
             />
 
-            <Text className={`mainSearchInfo ${infoTextVisible ? undefined : "hide"}`}>
-              Click an engine or press it's shortcut on your keyboard (letter in square brackets)
+            <Text className={`mainSearchInfo ${infoTextVisible ? undefined : "hide"}`} textAlign="center">
+              Click an engine or press it's shortcut on your keyboard (letter in square brackets).
             </Text>
 
             <ActiveRulesInfoText />

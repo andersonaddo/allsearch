@@ -54,7 +54,8 @@ export const BackgroundedContainer: React.FC<PropsWithChildren<ContainerProps>> 
             position="relative" //Need this so _before inherits width and height
             _before={!sourceLoaded ? undefined : {
                 content: "''",
-                position: "absolute",
+                position: "fixed",
+                top: "0px",
                 minWidth: "100%",
                 minHeight: "100%",
                 zIndex: -1,

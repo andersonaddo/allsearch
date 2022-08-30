@@ -13,3 +13,9 @@
 .mainSearchInfo.hide {
     opacity: 0;
 }
+
+
+body{
+    /* https://stackoverflow.com/a/65871351 */
+    overscroll-behavior-y: none;
+}

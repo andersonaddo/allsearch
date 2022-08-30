@@ -4,7 +4,9 @@ import {
 import * as React from "react";
 
 interface InfoProps {
-    message: string
+    message?: string
+    title?: string
+    children?: JSX.Element
     isOpen: boolean,
     onClose: () => void,
 }
@@ -24,11 +26,12 @@ const GenericInfoDialogue: React.FC<InfoProps> = (props) => {
             <AlertDialogOverlay>
                 <AlertDialogContent>
                     <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                        Info
+                        {props.title ?? "Info"}
                     </AlertDialogHeader>
 
                     <AlertDialogBody whiteSpace={"pre-wrap"}>
-                       {props.message}
+                        {props.message}
+                        {props.children}
                     </AlertDialogBody>
 
                     <AlertDialogFooter>

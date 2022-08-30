@@ -1,7 +1,7 @@
-import { Button, Container, FormControl, FormErrorMessage, FormLabel, Input, Text, useDisclosure, useToast } from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Code, Container, FormControl, FormErrorMessage, FormLabel, Input, Text, useDisclosure, useToast } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { defaultSearchEngineCategories } from "../data/defaultSearchEngines";
-import { ConfigExport, ConfigImport } from "../types/importExportTypes";
+import { ConfigExport, ConfigImport, NonFatalImportErrors } from "../types/importExportTypes";
 import { AutoActivationRuleDefinition, RuleId, StringReplacementRuleDefinition } from "../types/rulesTypes";
 import { Hotbar, MacroSet, SearchEngineId, SearchEngineSet } from "../types/searchEngineTypes";
 import {
@@ -21,8 +21,11 @@ export const ExtraSettingsPanel = () => {
   const [invalidFileInput, setInvalidFileInput] = useState(false)
   const [importErrorMessage, setImportErrorMessage] = useState("")
   const { isOpen: isImportModalOpen, onOpen: setImportModalOpen, onClose: setImportModalClose } = useDisclosure()
+  const { isOpen: isNonFatalModalOpen, onOpen: setNonFatalModalOpen, onClose: setNonFatalModalClose } = useDisclosure()
   const { isOpen: isInfoModalOpen, onOpen: setInfoModalOpen, onClose: setInfoModalClose } = useDisclosure()
   const { isOpen: isResetModalOpen, onOpen: setResetModalOpen, onClose: setResetModalClose } = useDisclosure()
+  const [nonFatalImportErrors, setNonFatalImportErrors] = useState("")
+
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const toast = useToast()
 
@@ -63,6 +66,16 @@ export const ExtraSettingsPanel = () => {
       const localMacros = getMacros();
       const localStoredRules = getRules();
       const localActiveRules = getActiveRules();
+
+      //For the errors I bother to handle gracefully
+      //Some of these errors should no longer be possible in the current version of 
+      //Allsearch (as long as they don't tamper with the export file), but some users
+      //have started using Allsearch since older versions and hence their local storage
+      //state isn't always the cleanest
+      const nonFatalImportErrors: NonFatalImportErrors = {
+        nonExistentEnginesInHotbar: 0,
+        nonExistentMacrosInHotbar: 0
+      }
 
       //*******Start with the custom engines*******
       for (const engine of Object.entries(importObj.customSearchEngines as SearchEngineSet)) {
@@ -123,13 +136,19 @@ export const ExtraSettingsPanel = () => {
           });
 
           if (Object.keys(localCustomEngines).includes(idEntry[0])) isPresent = true;
-          if (!isPresent) throw new Error("Bad Hotbar: Engine type missing from engine list!")
-          localHotbar[idEntry[0]] = "engine";
+          if (!isPresent) {
+            nonFatalImportErrors.nonExistentEnginesInHotbar++;
+          } else {
+            localHotbar[idEntry[0]] = "engine";
+          }
         } else {
           let isPresent = false
           if (Object.keys(localMacros).includes(idEntry[0])) isPresent = true;
-          if (!isPresent) throw new Error("Bad Hotbar: Macro type missing from macro list!")
-          localHotbar[idEntry[0]] = "macro";
+          if (!isPresent) {
+            nonFatalImportErrors.nonExistentMacrosInHotbar++;
+          } else {
+            localHotbar[idEntry[0]] = "macro";
+          }
         }
       }
 
@@ -210,6 +229,12 @@ export const ExtraSettingsPanel = () => {
         isClosable: true,
       })
 
+      if (nonFatalImportErrors.nonExistentEnginesInHotbar !== 0 ||
+        nonFatalImportErrors.nonExistentMacrosInHotbar !== 0) {
+        setNonFatalImportErrors(generateNonFatalErrorImportReport(nonFatalImportErrors))
+        setNonFatalModalOpen()
+      }
+
     } catch (err: any) {
       if (isInDevMode()) console.error(err)
       setImportErrorMessage(err?.message)
@@ -245,6 +270,17 @@ export const ExtraSettingsPanel = () => {
       reader.onload = resolve
       reader.onerror = reject;
     });
+  }
+
+  function generateNonFatalErrorImportReport(errors: NonFatalImportErrors): string {
+    let message = "";
+
+    if (errors.nonExistentEnginesInHotbar)
+      message += `There were ${errors.nonExistentEnginesInHotbar} engines in the imported hotbar that actually didn't exist, so we removed them.`
+    if (errors.nonExistentMacrosInHotbar)
+      message += `There were ${errors.nonExistentMacrosInHotbar} macros in the imported hotbar that actually didn't exist, so we removed them.`
+
+    return message
   }
 
   return (
@@ -310,6 +346,30 @@ export const ExtraSettingsPanel = () => {
         onClose={setInfoModalClose}
         isOpen={isInfoModalOpen}
       />
+
+      <GenericInfo
+        onClose={setNonFatalModalClose}
+        isOpen={isNonFatalModalOpen}
+      >
+        <>
+          <Text pb={4}>
+            The import was successful, but we might not have imported everything from
+            that import file. There were some minor issues with the config file you used.
+            This won't cause any issues with your Allsearch though!
+          </Text>
+          <Accordion>
+            <AccordionItem>
+              <AccordionButton>
+                What exactly wen't wrong?
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel pb={4}>
+                <Code>{nonFatalImportErrors}</Code>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        </>
+      </GenericInfo>
 
     </Container>
   );
