@@ -17,9 +17,9 @@ export const findOptimalOverlayOpacity = (
   //https://www.w3.org/WAI/WCAG21/quickref/?versions=2.0#qr-visual-audio-contrast-contrast
   //If it wasn't for the fact that our main page also has small text, we could have used 3
   //It's supposed ot be 4.5 but I increased it a bit based on empirical findings
-  const desiredContrast = 8;
+  const desiredContrast = 4.5;
 
-  const averageColor = getAverageImageColor(imageData);
+  const averageColor = getColorToRepresentImage(imageData, textColor);
   if (getContrast(textColor, averageColor) >= desiredContrast) return 0;
 
   const searchBounds = {
@@ -54,17 +54,27 @@ export const findOptimalOverlayOpacity = (
 }
 
 
-const getAverageImageColor = (imageData: ImageData): RGBColor => {
+const getColorToRepresentImage = (imageData: ImageData, textColor: RGBColor): RGBColor => {
+  //We give a higher weight to colors that have a lower contrast against the text color
   let r = 0;
   let g = 0;
   let b = 0;
-  const numberOfPixels = imageData.data.length / 4
+  let totalWeight = 0;
   for (let i = 0; i < imageData.data.length; i += 4) {
-    r += imageData.data[i]
-    g += imageData.data[i + 1]
-    b += imageData.data[i + 2]
+    const contrast = getContrast({r: imageData.data[i], g: imageData.data[i + 1], b: imageData.data[i + 2]}, textColor)
+    let weight = 1;
+    //Magic numbers incoming, lol. They're only empirical 
+    if (contrast < 1) weight = 12
+    else if (contrast < 3) weight = 10
+    else if (contrast < 4) weight = 2
+    else if (contrast < 5) weight = 1.5
+
+    r += imageData.data[i] * weight
+    g += imageData.data[i + 1] * weight
+    b += imageData.data[i + 2] * weight
+    totalWeight += weight;
   }
-  return { r: r / numberOfPixels, g: g / numberOfPixels, b: b / numberOfPixels }
+  return { r: r / totalWeight, g: g / totalWeight, b: b / totalWeight }
 }
 
 const getContrast = (color1: RGBColor, color2: RGBColor): number => {
