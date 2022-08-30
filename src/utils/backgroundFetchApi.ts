@@ -21,7 +21,7 @@ export const getImageCategorySearchParams = () => {
         "architecture", "civilization", "travel", "skyline",
         "city", "travel", "ocean", "sealife", "beach", "roadtrip", "aerial",
         "clouds", "autumn", "space", "astronomy", "gravel", "texture", 
-        "desert", "stream", "river"    
+        "desert", "stream", "river", "island", "railroad", "view"   
     ]
 
     return possibleQueries[getRandomInt(possibleQueries.length)]

@@ -24,16 +24,16 @@ export const MainSearch = () => {
   const navigate = useNavigate();
   const initializedWithURLSearchQuery = useRef(!!searchParams.get("q"))
 
-
+  //Important that we only do this on first render, 
+  //because exiting the search bar also edits the url query param 
+  //but then that doesn't need any extra handling because other code paths handle that
   useEffect(() => {
     const queryFromUrl = searchParams.get("q") || ""
     setQuery(queryFromUrl)
     autoActivateEnginesFromRules(queryFromUrl);
     setInfoTextVisible(initializedWithURLSearchQuery.current)
-  }, [searchParams])
-
-
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) 
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
@@ -133,6 +133,10 @@ export const MainSearch = () => {
                 if (e.key !== "Enter") return;
                 autoActivateEnginesFromRules(query);
                 e.target.blur();
+                //Navigating to the same component (so there will be no component initialization)
+                //so that the url can stay in sync with the query (this is also not pushing
+                //onto the browser history)
+                navigate(`/search?q=${encodeURIComponent(query)}`, {replace: true})
               }}
               onBlur={() => {
                 setLastUnfocusedKey("")

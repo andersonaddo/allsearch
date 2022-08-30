@@ -237,7 +237,7 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 name: "Startupy",
                 shortcut: "s",
                 query: "https://beta.startupy.world/search/?value={searchTerms}",
-                description: "A search engine where the entries are all added in my hand. Requires sign up.",
+                description: "A search engine where the entries are all added in by hand. Requires sign up.",
                 logoUrl: "https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/e7ajt735ayix3dqvdqr4"
             },
             internetarchive: {

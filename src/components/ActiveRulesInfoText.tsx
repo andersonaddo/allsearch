@@ -22,7 +22,7 @@ const ActiveRulesInfoText: React.FC = () => {
             {activeRuleCount <= 0 ? null :
                 <>
                     <FaCogs />
-                    <Link onClick={() => navigate("./settings?index=5")}>
+                    <Link onClick={() => navigate("./settings?index=3")}>
                         {activeRuleCount} active rule{activeRuleCount > 1 ? "s" : ""}
                     </Link>
                 </>

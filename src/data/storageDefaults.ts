@@ -14,7 +14,7 @@ export const defaultMacroList : MacroSet = {
     exampleMacro:{
         name: "Example Macro",
         shortcut: "m",
-        description: "A sample macro. Feed free to delete it.",
+        description: "A sample macro. Feel free to delete it.",
         engines: {brave: true, ddg: true}
     }
 }

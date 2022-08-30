@@ -47,8 +47,7 @@ const RuleModal: React.FC<ModalProps<AnyRule>> = (props) => {
     const [selectedAction, setSelectedAction] = useState<MacroId | SearchEngineId>("")
     const [actionSelectionInvalid, setActionSelectionInvalid] = useState(false)
     const checkIfActionSelectionInvalid = () => selectedAction === ""
-    const [cleanupTriggerAfterwards, setCleanupTriggerAfterwards] = useState(false)
-
+    const [cleanupTriggerAfterwards, setCleanupTriggerAfterwards] = useState(true)
 
     const toast = useToast()
 
@@ -122,7 +121,7 @@ const RuleModal: React.FC<ModalProps<AnyRule>> = (props) => {
                 triggerStrings: triggerListInput.trim().split("\n").map(x => x.trim()).filter(x => !!x),
                 ruleType: "autoActivation",
                 autoActivatedAction: selectedAction,
-                removeTriggerAfterRuleActivation: false
+                removeTriggerAfterRuleActivation: cleanupTriggerAfterwards
             }
 
             if (nameInput.trim()) newRuleWithId.name = nameInput.trim()
@@ -154,7 +153,7 @@ const RuleModal: React.FC<ModalProps<AnyRule>> = (props) => {
             if (inActionRuleMode(props)) {
                 getExhaustiveActionList()
                 setSelectedAction(props.rule?.autoActivatedAction ?? "")
-                setCleanupTriggerAfterwards(props.rule?.removeTriggerAfterRuleActivation ?? false)
+                setCleanupTriggerAfterwards(props.rule?.removeTriggerAfterRuleActivation ?? true)
             }
         }
     }, [props.rule, props.isOpen, props])
