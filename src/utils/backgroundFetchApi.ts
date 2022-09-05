@@ -21,7 +21,10 @@ export const getImageCategorySearchParams = () => {
         "architecture", "civilization", "travel", "skyline",
         "city", "travel", "ocean", "sealife", "beach", "roadtrip", "aerial",
         "clouds", "autumn", "space", "astronomy", "gravel", "texture", 
-        "desert", "stream", "river", "island", "railroad", "view"   
+        "desert", "stream", "river", "island", "railroad", "view",
+        "grand canyon", "yellowstone", "Banff", "serengeti scenery", "serengeti", "Seoul",
+        "Salar de Uyuni", "Aurora Borealis", "Cliffs of Moher", "Causeway", "Seascape",
+        "rainforest"
     ]
 
     return possibleQueries[getRandomInt(possibleQueries.length)]
