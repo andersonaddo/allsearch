@@ -59,7 +59,7 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 name: "Kagi",
                 shortcut: "k",
                 query: "https://kagi.com/search?q={searchTerms}",
-                description: "Kagi is a privacy-focused, user-centric search engine that uses an algorithm users can tweak. Requires payment.",
+                description: "Kagi is a privacy-focused, user-centric search engine that uses an algorithm users can tweak. Requires a monthly subscription from its users.",
                 logoUrl: "https://assets.kagi.com/v1/kagi_assets/logos/yellow_3.png?v=2d05f2eff57e227664d8eab839503754e7582b03",
             },
             //https://www.reddit.com/r/sysadmin/comments/ew3i2y/comment/fg05efq
@@ -205,7 +205,7 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 shortcut: "s",
                 query: "https://scite.ai/search?q={searchTerms}",
                 logoUrl: "https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/fzrgvyt71msrkm2i1uh3",
-                description: "A platform for discovering and evaluating scientific articles via Smart Citations. Requires payment to use."
+                description: "A platform for discovering and evaluating scientific articles via Smart Citations. Requires a monthly subscription from its users."
             },
             vadlo: {
                 name: "VADLO",
@@ -217,7 +217,7 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 name: "SearchOnMath",
                 shortcut: "m",
                 query: "https://www.searchonmath.com/result/?q={searchTerms}",
-                description: "A powerful search engine for mathematical formulas with LaTeX support. Requires payment."
+                description: "A powerful search engine for mathematical formulas with LaTeX support. Requires a monthly subscription from its users."
             },
         }
     },
