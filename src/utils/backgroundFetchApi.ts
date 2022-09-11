@@ -1,3 +1,4 @@
+import { fetchBackgroundFromBing } from "../apis/bingImageApi";
 import { fetchBackgroundFromPexels } from "../apis/pexelsImageApi";
 import { fetchBackgroundFromUnplash } from "../apis/unplashImageApi";
 import { holidaySpecs } from "../data/holidays";
@@ -32,11 +33,13 @@ export const getImageCategorySearchParams = () => {
 
 //Error handling is handled by caller
 export const fetchNewBackgroundInfoFromApi = async (): Promise<BackgroundInfo> => {
-    //20% change Unplash (worse results and smaller quota), 80% pexels
+    //20% change Unplash (worse results and smaller quota), 20% Bing, 60% pexels
     let results = null;
 
-    if (getRandomInt(100) < 20) results = await fetchBackgroundFromUnplash()
+    const choice = getRandomInt(100);
+    if (choice < 20) results = await fetchBackgroundFromUnplash()
+    else if (choice < 40) results = await fetchBackgroundFromBing()
     else results = await fetchBackgroundFromPexels();
-
+    
     return results;
 }
