@@ -53,6 +53,14 @@ export const isUrl = (s: string): boolean => {
     return regexp.test(s);
 }
 
+export const stringToUrl = (s: string): URL | null => {
+    try {
+        return new URL(s);
+    } catch (_) {
+        return null;
+    }
+}
+
 
 export const isValidShortcut = (s: string): boolean => {
     return !!s.match(/^[0-9a-z]+$/)

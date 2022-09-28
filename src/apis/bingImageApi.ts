@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 import { BackgroundInfo } from '../utils/backgroundProvider';
-import { getRandomInt } from '../utils/utils';
 
 //TODO: If this project ever becomes commercial, I might have to disable this since 
 //the images here miiiight not be available for commercial use...

@@ -1,6 +1,7 @@
 import { ActiveRules, StoredRules } from "../types/rulesTypes";
 import { Hotbar, MacroSet, SearchEngineSet } from "../types/searchEngineTypes";
 import { currentVersionForOnboarding, SessionAggregationInfo } from "../utils/onboardingManager";
+import {MiscSettingsConfig} from '../types/miscSettingsConfig'
 
 export const defaultHotbar: Hotbar = {
     google: "engine",
@@ -51,4 +52,8 @@ export const defaultSessionAggregationInfo: SessionAggregationInfo = {
     totalLaunches: 0,
     launchesThisVersion: 0,
     infoButtonPopoverShown: false
+}
+
+export const defaultMiscSettings : MiscSettingsConfig = {
+    readFromClipboardForQuery: true
 }

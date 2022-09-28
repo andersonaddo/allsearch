@@ -1,9 +1,10 @@
 import { ActiveRules, AnyRule, RuleId, ruleIsAutoActivation, ruleIsStringReplacement, RuleType, StoredRules } from "../types/rulesTypes";
 import { Hotbar, HotbarEngineType, MacroDefinitionWithId, MacroId, MacroSet, SearchEngineDefinitionWithId, SearchEngineId, SearchEngineSet } from "../types/searchEngineTypes";
-import { defaultActiveRules, defaultCustomEngineList, defaultHotbar, defaultMacroList, defaultRules, defaultSessionAggregationInfo } from "../data/storageDefaults";
+import { defaultActiveRules, defaultCustomEngineList, defaultHotbar, defaultMacroList, defaultMiscSettings, defaultRules, defaultSessionAggregationInfo } from "../data/storageDefaults";
 import { BackgroundInfo } from "./backgroundProvider";
 import { SessionAggregationInfo } from "./onboardingManager";
 import { EnrichTypeWithId } from "./utils";
+import { MiscSettingsConfig } from "../types/miscSettingsConfig";
 
 export const HOTBAR_STORAGE_KEY = "hotbar"
 export const CUSTOM_ENG_STORAGE_KEY = "customEngines"
@@ -12,6 +13,7 @@ export const BACKGROUND_INFO_STORAGE_KEY = "backgroundInfo"
 export const ONBOARDING_AGG_INFO_STORAGE_KEY = "onboardingSessionAggInfo"
 export const STORED_RULES_STORAGE_KEY = "storedRules"
 export const ACTIVE_RULES_STORAGE_KEY = "activeRules"
+export const EXTRA_MISC_SETTINGS = "extraMiscellaneousSettings"
 
 export const clearKey = (key : string) => {
     localStorage.removeItem(key)
@@ -180,3 +182,13 @@ export const addToActiveRules = (id: RuleId, ruleType: RuleType) => {
     localStorage.setItem(ACTIVE_RULES_STORAGE_KEY, JSON.stringify(activeRules));
 }
 
+
+export const getMiscSettingsConfig = (): MiscSettingsConfig => {
+    const info = localStorage.getItem(EXTRA_MISC_SETTINGS);
+    if (!info) return defaultMiscSettings;
+    return JSON.parse(info);
+}
+
+export const setMiscSettingsConfig = (info: MiscSettingsConfig): void => {
+    localStorage.setItem(EXTRA_MISC_SETTINGS, JSON.stringify(info));
+}

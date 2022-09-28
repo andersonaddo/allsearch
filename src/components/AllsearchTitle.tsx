@@ -7,7 +7,7 @@ const AllsearchTitle: React.FC = () => {
         as='h1' 
         size='4xl'
         textShadow="0px 0px 40px rgba(0,0,0, 0.4)">
-            AllSearch
+            Allsearch
         </Heading>
     )
 }

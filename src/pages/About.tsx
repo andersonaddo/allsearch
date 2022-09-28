@@ -61,6 +61,11 @@ export const About = () => {
           (only read the first few paragraphs).
         </ListItem>
 
+        <ListItem fontSize={"large"}>
+          <ListIcon as={MdInfo} color='blue.500' />
+          Be sure to check out the settings page to see what else Allsearch can do!
+        </ListItem>
+
 
         <ListItem fontSize={"large"}>
           <ListIcon as={MdInfo} color='blue.500' />

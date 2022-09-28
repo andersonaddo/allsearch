@@ -4,7 +4,7 @@ import {
   ACTIVE_RULES_STORAGE_KEY, BACKGROUND_INFO_STORAGE_KEY,
   clearKey, CUSTOM_ENG_STORAGE_KEY, HOTBAR_STORAGE_KEY,
   MACROS_STORAGE_KEY, ONBOARDING_AGG_INFO_STORAGE_KEY,
-  STORED_RULES_STORAGE_KEY
+  STORED_RULES_STORAGE_KEY, EXTRA_MISC_SETTINGS
 } from "../utils/storage";
 
 export const DevSettingsPanel = () => {
@@ -68,6 +68,12 @@ export const DevSettingsPanel = () => {
         value={ACTIVE_RULES_STORAGE_KEY}
         onChange={e => onStorageKeyCheckChanged(e.target.checked, ACTIVE_RULES_STORAGE_KEY)}>
         ACTIVE_RULES_STORAGE_KEY
+      </Checkbox>
+
+      <Checkbox
+        value={ACTIVE_RULES_STORAGE_KEY}
+        onChange={e => onStorageKeyCheckChanged(e.target.checked, EXTRA_MISC_SETTINGS)}>
+        EXTRA_MISC_SETTINGS
       </Checkbox>
 
       <Button onClick={resetStorage} colorScheme="red">Reset local storage</Button>

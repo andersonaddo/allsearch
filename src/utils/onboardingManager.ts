@@ -1,6 +1,8 @@
 import { getSessionAggregationInfo, setSessionAggregationInfo } from "./storage";
 
-export const currentVersionForOnboarding: number = 2;
+//Increment this when you want to let users know (via a cute popup :3) when there's new things.
+//The popup will point users to the About page.
+export const currentVersionForOnboarding: number = 3;
 
 export interface SessionAggregationInfo {
     currentVersion: number,

@@ -1,4 +1,4 @@
-import { DarkMode, Flex, HStack, IconButton, Input, Link, Text, VStack } from "@chakra-ui/react";
+import { DarkMode, Flex, HStack, IconButton, Input, Link, Text, useToast, VStack } from "@chakra-ui/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BsFillGearFill } from "react-icons/bs";
 import { IoMdRefresh } from "react-icons/io";
@@ -10,8 +10,8 @@ import { MacroChip, SearchEngineChip } from "../components/HotbarChips";
 import InfoButton from "../components/InfoButton";
 import { fetchBackgroundImage, useBackgroundImageInfo } from "../utils/backgroundProvider";
 import { autoActivateEnginesFromRules } from "../utils/ruleActivation";
-import { getHotbar } from "../utils/storage";
-import { getMacroFromId, getSearchEngineFromId } from "../utils/utils";
+import { getHotbar, getMiscSettingsConfig } from "../utils/storage";
+import { getMacroFromId, getSearchEngineFromId, stringToUrl } from "../utils/utils";
 
 
 export const MainSearch = () => {
@@ -21,17 +21,24 @@ export const MainSearch = () => {
   const [infoTextVisible, setInfoTextVisible] = useState(false)
   const [searchParams] = useSearchParams();
   const backgroundInfo = useBackgroundImageInfo();
-  const navigate = useNavigate();
-  const initializedWithURLSearchQuery = useRef(!!searchParams.get("q"))
 
-  //Important that we only do this on first render, 
-  //because exiting the search bar also edits the url query param 
-  //but then that doesn't need any extra handling because other code paths handle that
+  const navigate = useNavigate();
+  const toast = useToast()
+
+  const initializedWithURLSearchQuery = useRef(!!searchParams.get("q"))
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
+
+
+  //Important that we only read from searchParams (into the search bar) on first render, 
+  //because editing the search bar also edits the url query param.
+  //So the logic that handles user input into the search bar has similar code to this
+  //minus the reading from searchParams
   useEffect(() => {
     const queryFromUrl = searchParams.get("q") || ""
     setQuery(queryFromUrl)
     autoActivateEnginesFromRules(queryFromUrl);
     setInfoTextVisible(initializedWithURLSearchQuery.current)
+    setTabTitle(query)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -40,10 +47,17 @@ export const MainSearch = () => {
       if (!e) return;
       if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey) return;
       if (!isTyping) setLastUnfocusedKey(e.key)
+
+      if (e.key === "`") {
+        getQueryFromKeyboard()
+        unfocusInputField()
+      }
     };
 
     document.addEventListener("keydown", handleKeyDown, false);
     return () => document.removeEventListener("keydown", handleKeyDown, false);
+    //TODO: I shouldn't be doing this, got lazy
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTyping]);
 
 
@@ -74,6 +88,59 @@ export const MainSearch = () => {
 
   function clearLastUnfocusedKey() {
     setLastUnfocusedKey("")
+  }
+
+  function unfocusInputField() {
+    searchInputRef.current?.blur();
+  }
+
+  function setTabTitle(title: string) {
+    //There is a limit to what this title should be, but it's browser dependent
+    //https://stackoverflow.com/questions/8516235/max-length-of-title-attribute
+    document.title = title.substring(0, 200)
+  }
+
+  function addQueryToPageUrl(query: string) {
+    //Navigating to the same component (so there will be no component initialization)
+    //so that the url can stay in sync with the query 
+    //(this also doesn't push onto the browser history)
+    navigate(`/search?q=${encodeURIComponent(query)}`, { replace: true })
+  }
+
+  function getQueryFromKeyboard() {
+    let query = ""
+
+    if (!getMiscSettingsConfig().readFromClipboardForQuery) return;
+
+    navigator.clipboard
+      .readText()
+      .then((clipText) => {
+        const convertedUrl = stringToUrl(clipText)
+        if (convertedUrl) query = (convertedUrl.searchParams.get("q") || convertedUrl.searchParams.get("query")) ?? ""
+        else query = clipText;
+
+        if (query) {
+          setQuery(query);
+          setTabTitle(query)
+          autoActivateEnginesFromRules(query);
+          addQueryToPageUrl(query);
+          toast({
+            title: 'Read from clipboard!',
+            description: "Search away :)",
+            status: 'success',
+            duration: 1000,
+            isClosable: true,
+          })
+        } else {
+          toast({
+            title: "Couldn't read from clipboard",
+            description: "There was no text there for Allsearch to read.",
+            status: "warning",
+            duration: 1000,
+            isClosable: true,
+          })
+        }
+      })
   }
 
 
@@ -124,6 +191,7 @@ export const MainSearch = () => {
 
           <VStack width="85%">
             <Input
+              ref={searchInputRef}
               autoFocus={!initializedWithURLSearchQuery.current}
               placeholder='Type something in!'
               fontSize={"18px"}
@@ -136,12 +204,10 @@ export const MainSearch = () => {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key !== "Enter") return;
+                unfocusInputField()
                 autoActivateEnginesFromRules(query);
-                e.target.blur();
-                //Navigating to the same component (so there will be no component initialization)
-                //so that the url can stay in sync with the query (this is also not pushing
-                //onto the browser history)
-                navigate(`/search?q=${encodeURIComponent(query)}`, { replace: true })
+                addQueryToPageUrl(query);
+                setTabTitle(query)
               }}
               onBlur={() => {
                 setLastUnfocusedKey("")
@@ -155,7 +221,7 @@ export const MainSearch = () => {
             />
 
             <Text className={`mainSearchInfo ${infoTextVisible ? undefined : "hide"}`} textAlign="center">
-              Click an engine or press it's shortcut on your keyboard (letter in square brackets).
+              Click an engine or press its shortcut on your keyboard (letter in square brackets).
             </Text>
 
             <ActiveRulesInfoText />

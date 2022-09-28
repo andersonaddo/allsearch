@@ -1,14 +1,16 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Code, Container, FormControl, FormErrorMessage, FormLabel, Input, Text, useDisclosure, useToast } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Button, Checkbox, Code, Container, FormControl, FormErrorMessage, FormLabel, Heading, Input, Text, useDisclosure, useToast } from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
 import { defaultSearchEngineCategories } from "../data/defaultSearchEngines";
 import { ConfigExport, ConfigImport, NonFatalImportErrors } from "../types/importExportTypes";
 import { AutoActivationRuleDefinition, RuleId, StringReplacementRuleDefinition } from "../types/rulesTypes";
 import { Hotbar, MacroSet, SearchEngineId, SearchEngineSet } from "../types/searchEngineTypes";
 import {
   ACTIVE_RULES_STORAGE_KEY, clearKey, CUSTOM_ENG_STORAGE_KEY,
+  EXTRA_MISC_SETTINGS,
   forceSetKey, getActiveRules, getCustomSearchEngineList,
-  getHotbar, getMacros, getRules, HOTBAR_STORAGE_KEY, MACROS_STORAGE_KEY,
+  getHotbar, getMacros, getMiscSettingsConfig, getRules, HOTBAR_STORAGE_KEY, MACROS_STORAGE_KEY,
   ONBOARDING_AGG_INFO_STORAGE_KEY,
+  setMiscSettingsConfig,
   STORED_RULES_STORAGE_KEY
 } from "../utils/storage";
 import { isInDevMode } from "../utils/utils";
@@ -20,14 +22,21 @@ export const ExtraSettingsPanel = () => {
 
   const [invalidFileInput, setInvalidFileInput] = useState(false)
   const [importErrorMessage, setImportErrorMessage] = useState("")
+  const [nonFatalImportErrors, setNonFatalImportErrors] = useState("")
+  const [clipboardCheckboxChecked, setClipboardCheckboxChecked] = useState(false)
+
   const { isOpen: isImportModalOpen, onOpen: setImportModalOpen, onClose: setImportModalClose } = useDisclosure()
   const { isOpen: isNonFatalModalOpen, onOpen: setNonFatalModalOpen, onClose: setNonFatalModalClose } = useDisclosure()
   const { isOpen: isInfoModalOpen, onOpen: setInfoModalOpen, onClose: setInfoModalClose } = useDisclosure()
   const { isOpen: isResetModalOpen, onOpen: setResetModalOpen, onClose: setResetModalClose } = useDisclosure()
-  const [nonFatalImportErrors, setNonFatalImportErrors] = useState("")
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+
   const toast = useToast()
+
+  useEffect(() => {
+    setClipboardCheckboxChecked(getMiscSettingsConfig().readFromClipboardForQuery)
+  }, [])
 
   function exportConfiguration() {
     const data: ConfigExport = {
@@ -250,6 +259,7 @@ export const ExtraSettingsPanel = () => {
     clearKey(STORED_RULES_STORAGE_KEY)
     clearKey(ACTIVE_RULES_STORAGE_KEY)
     clearKey(ONBOARDING_AGG_INFO_STORAGE_KEY)
+    clearKey(EXTRA_MISC_SETTINGS)
 
     toast({
       title: 'Reset!',
@@ -286,6 +296,21 @@ export const ExtraSettingsPanel = () => {
   return (
     <Container alignContent={"center"} justifyContent={"center"} minWidth={"80%"}>
 
+      <Heading>Extra Functionality</Heading>
+
+      <Checkbox
+        isChecked={clipboardCheckboxChecked}
+        onChange={(e) => {
+          setMiscSettingsConfig({ ...getMiscSettingsConfig(), readFromClipboardForQuery: e.target.checked })
+          setClipboardCheckboxChecked(!clipboardCheckboxChecked)
+        }}
+        mb="8"
+      >
+        Pressing the <Code>`</Code> key fills the search bar with the contents of the clipboard
+      </Checkbox>
+
+      <Heading>Import/Export</Heading>
+
       <Text m="2">
         Export your Allsearch configuration to a plain text file to allow others to import it.
       </Text>
@@ -312,6 +337,8 @@ export const ExtraSettingsPanel = () => {
       <Button onClick={setImportModalOpen}>Import Allsearch Configuration</Button>
 
       <Spacer axis="vertical" size={"40px"} />
+
+      <Heading>Resetting</Heading>
 
       <Text m="2" color={"red"}>
         Reset Allsearch
