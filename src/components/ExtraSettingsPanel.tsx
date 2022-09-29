@@ -306,7 +306,7 @@ export const ExtraSettingsPanel = () => {
         }}
         mb="8"
       >
-        Pressing the <Code>`</Code> key fills the search bar with the contents of the clipboard
+        Pressing the <Code>`</Code> key fills the search bar with the contents of the clipboard. Doesn't work for Firefox.
       </Checkbox>
 
       <Heading>Import/Export</Heading>

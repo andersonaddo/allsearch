@@ -97,7 +97,7 @@ export const MainSearch = () => {
   function setTabTitle(title: string) {
     //There is a limit to what this title should be, but it's browser dependent
     //https://stackoverflow.com/questions/8516235/max-length-of-title-attribute
-    document.title = title.substring(0, 200)
+    document.title = title.trim().substring(0, 200) || "Allsearch"
   }
 
   function addQueryToPageUrl(query: string) {
@@ -110,6 +110,7 @@ export const MainSearch = () => {
   function getQueryFromKeyboard() {
     let query = ""
 
+    if (typeof navigator.clipboard?.readText !== "function") return; //For Firefox :(
     if (!getMiscSettingsConfig().readFromClipboardForQuery) return;
 
     navigator.clipboard
