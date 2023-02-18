@@ -1,4 +1,5 @@
-This project was bootstrapped with
-[Create React App](https://github.com/facebook/create-react-app).
+## Allsearch 
 
-Making search better.
+<img src = "readme_media/AllsearchIcon.png"  height="50">
+
+Allsearch is a basic (but beautiful!) web portal that's meant to make it easier for you to use search engines apart from Google.

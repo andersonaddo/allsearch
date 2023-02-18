@@ -1,5 +1,6 @@
 import { Button, Container, Heading, List, ListIcon, ListItem, Text, Link } from "@chakra-ui/react";
 import { MdCheckCircle, MdWarning, MdInfo } from "react-icons/md";
+import { FaGithub } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 export const About = () => {
@@ -70,6 +71,13 @@ export const About = () => {
         <ListItem fontSize={"large"}>
           <ListIcon as={MdInfo} color='blue.500' />
           Any ideas, questions or concerns, email <b> hello [at] allsear.ch </b>
+        </ListItem>
+
+        <ListItem fontSize={"large"}>
+          <ListIcon as={FaGithub} color='blue.500' />
+          Allsearch is open sourced on <Link isExternal color='teal.500' href="https://github.com/andersonaddo/allsearch">
+            Github
+            </Link>
         </ListItem>
       </List>
 
