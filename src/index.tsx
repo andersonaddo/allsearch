@@ -5,6 +5,7 @@ import reportWebVitals from "./analytics/reportWebVitals"
 import { About } from "./pages/About"
 import { MainSearch } from "./pages/MainSearch"
 import { Settings } from "./pages/Settings"
+import { PluginAnchor } from "./pages/PluginAnchor"
 import * as serviceWorker from "./serviceWorker"
 import theme from "./styling/theme"
 import { recordSession } from "./utils/onboardingManager"
@@ -28,6 +29,7 @@ root.render(
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <BrowserRouter>
       <Routes>
+        <Route path=".anchor" element={<PluginAnchor />} />
         <Route path="settings" element={<Settings />} />
         <Route path="about" element={<About />} />
         <Route path="*" element={<MainSearch />} />

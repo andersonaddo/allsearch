@@ -36,7 +36,12 @@ export const MainSearch = () => {
   useEffect(() => {
     const queryFromUrl = searchParams.get("q") || ""
     setQuery(queryFromUrl)
-    autoActivateEnginesFromRules(queryFromUrl);
+
+    console.log(window.performance.getEntriesByType("navigation"))
+
+    if (window.performance.getEntriesByType("navigation")[0].entryType !== "back_forward") 
+      autoActivateEnginesFromRules(queryFromUrl); //To prevent coming to page from back button re-executing rules
+
     setInfoTextVisible(initializedWithURLSearchQuery.current)
     setTabTitle(query)
     // eslint-disable-next-line react-hooks/exhaustive-deps
