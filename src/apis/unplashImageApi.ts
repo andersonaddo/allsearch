@@ -76,6 +76,7 @@ export const fetchBackgroundFromUnplash = async (): Promise<BackgroundInfo> => {
         author: results.data.at(chosenIndex)?.user?.name || "",
         sourceUrl: results.data.at(chosenIndex)?.links?.html || "",
         timestamp: new Date().getTime(),
-        sourceName: "Unsplash"
+        sourceName: "Unsplash",
+        isUserDefined: false
     }
 }

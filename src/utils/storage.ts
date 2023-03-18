@@ -110,13 +110,16 @@ export const removeMacro = (macro: MacroDefinitionWithId) => {
     localStorage.setItem(MACROS_STORAGE_KEY, JSON.stringify(currentList));
 }
 
-export const getStoredBackgroundInfo = (): BackgroundInfo | null => {
+/**
+ * Do not use directly! Background image info should only be read and written via backgroundProvider.ts
+ */
+export const getBackgroundInfo = (): BackgroundInfo | null => {
     const info = localStorage.getItem(BACKGROUND_INFO_STORAGE_KEY);
     if (!info) return null;
     return JSON.parse(info);
 }
 
-export const setStoredBackgroundInfo = (info: BackgroundInfo): void => {
+export const setBackgroundInfo = (info: BackgroundInfo): void => {
     localStorage.setItem(BACKGROUND_INFO_STORAGE_KEY, JSON.stringify(info));
 }
 

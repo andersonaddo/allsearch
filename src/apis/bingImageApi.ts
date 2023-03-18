@@ -38,6 +38,7 @@ export const fetchBackgroundFromBing = async (): Promise<BackgroundInfo> => {
         author:  results.data.copyright?.match(/\(([^)]*)\)[^(]*$/)?.at(1)?.replaceAll("©", "") ?? "",
         sourceUrl: results.data.copyright_link || "",
         timestamp: new Date().getTime(),
-        sourceName: "Bing"
+        sourceName: "Bing",
+        isUserDefined: false
     }
 }

@@ -21,6 +21,8 @@ interface ModalProps {
 
 const EngineModal: React.FC<ModalProps> = (props) => {
 
+    //TODO: Next time you edit this, see if you can integrate URLInputFieldProps (or, even better, a more generalized version of that) 
+
     const [nameInput, setNameInput] = useState('')
     const [descriptionInput, setDescriptionInput] = useState('')
     const [shortcutInput, setShortcutInput] = useState('')

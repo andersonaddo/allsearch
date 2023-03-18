@@ -55,5 +55,6 @@ export const defaultSessionAggregationInfo: SessionAggregationInfo = {
 }
 
 export const defaultMiscSettings : MiscSettingsConfig = {
-    readFromClipboardForQuery: true
+    readFromClipboardForQuery: true,
+    userDefinedBackgroundEnabled: false
 }

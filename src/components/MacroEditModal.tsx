@@ -23,6 +23,8 @@ interface ModalProps {
 
 const MacroModal: React.FC<ModalProps> = (props) => {
 
+    //TODO: Next time you edit this, see if you can integrate URLInputFieldProps (or, even better, a more generalized version of that) 
+
     const [exhaustiveSearchEngineList, setExhaustiveSearchEngineList] = useState<SearchEngineSet>({})
     const [selectedSearchEngines, setSelectedSearchEngines] = useState<Record<MacroId, true>>({})
 
@@ -206,7 +208,7 @@ const MacroModal: React.FC<ModalProps> = (props) => {
                                     />
                                 })}
                             </VStack>
-                            
+
                         </Container>
                         <FormErrorMessage>You have to choose at least one engine!</FormErrorMessage>
                     </FormControl>

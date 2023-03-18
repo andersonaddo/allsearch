@@ -8,7 +8,8 @@ import AllsearchTitle from "../components/AllsearchTitle";
 import { BackgroundedContainer } from "../components/BackgroundedContainer";
 import { MacroChip, SearchEngineChip } from "../components/HotbarChips";
 import InfoButton from "../components/InfoButton";
-import { fetchBackgroundImage, useBackgroundImageInfo } from "../utils/backgroundProvider";
+import { MiscSettingsConfig } from "../types/miscSettingsConfig";
+import { fetchNewBackgroundImage, useBackgroundImageInfo } from "../utils/backgroundProvider";
 import { autoActivateEnginesFromRules } from "../utils/ruleActivation";
 import { getHotbar, getMiscSettingsConfig } from "../utils/storage";
 import { getMacroFromId, getSearchEngineFromId, stringToUrl } from "../utils/utils";
@@ -21,6 +22,7 @@ export const MainSearch = () => {
   const [infoTextVisible, setInfoTextVisible] = useState(false)
   const [searchParams] = useSearchParams();
   const backgroundInfo = useBackgroundImageInfo();
+  const miscSettings = useRef<MiscSettingsConfig | null>(null)
 
   const navigate = useNavigate();
   const toast = useToast()
@@ -39,6 +41,7 @@ export const MainSearch = () => {
     autoActivateEnginesFromRules(queryFromUrl);
     setInfoTextVisible(initializedWithURLSearchQuery.current)
     setTabTitle(query)
+    miscSettings.current = getMiscSettingsConfig();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -111,7 +114,7 @@ export const MainSearch = () => {
     let query = ""
 
     if (typeof navigator.clipboard?.readText !== "function") return; //For Firefox :(
-    if (!getMiscSettingsConfig().readFromClipboardForQuery) return;
+    if (!miscSettings.current?.readFromClipboardForQuery) return;
 
     navigator.clipboard
       .readText()
@@ -159,12 +162,14 @@ export const MainSearch = () => {
             zIndex={2} //Important so that the InfoButton popover renders over the search bar
             right="24px"
             top="24px">
-            <IconButton
-              aria-label="New Image"
-              icon={<IoMdRefresh />}
-              onClick={() => fetchBackgroundImage(true)}
-              variant='ghost'
-            />
+            {!miscSettings.current?.userDefinedBackgroundEnabled &&
+              <IconButton
+                aria-label="New Image"
+                icon={<IoMdRefresh />}
+                onClick={() => fetchNewBackgroundImage(true)}
+                variant='ghost'
+              />
+            }
             <InfoButton />
             <IconButton
               aria-label="Settings"
@@ -175,7 +180,7 @@ export const MainSearch = () => {
           </HStack>
 
 
-          {!!backgroundInfo &&
+          {(backgroundInfo && !backgroundInfo.isUserDefined) &&
             <Text
               position="fixed"
               left="24px"
