@@ -153,7 +153,7 @@ export const ExtraSettingsPanel = () => {
           <URLInputField
             label="Background URL"
             initialValue={(getBackgroundInfo()?.isUserDefined && getBackgroundInfo()?.url) || ""}
-            helperText="If the URL is correct but the image doesn't work, it's probably because the URL is rejecting Allsearch, try another photo."
+            helperText="If the URL is valid but the homepage background is still blank, it's probably because the URL's server is rejecting Allsearch. This is rare, but can happen. Try another photo."
             onValidityChange={(isValid) => setSserDefinedBackgroundUrlValid(isValid)}
             onValueChange={(value) => userDefinedBackgroundUrl.current = value}
             isRequired={true}

@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "ALLORIGINS",
         "allsearch",
         "Backgrounded",
         "bodhi",
@@ -13,5 +14,6 @@
         "unfocus",
         "unplash",
         "uuidv"
-    ]
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

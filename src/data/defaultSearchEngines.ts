@@ -97,7 +97,6 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 name: "Yandex",
                 shortcut: "y",
                 query: "https://yandex.com/search?text={searchTerms}",
-                logoUrl: "https://assets.stickpng.com/images/623b00a027d4946aceae2fdb.png",
                 description: "A search engine and web portal popular in Russia."
             },
             mojeek: {
@@ -132,7 +131,6 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 name: "Seznam",
                 shortcut: "z",
                 query: "https://search.seznam.cz/?q={searchTerms}",
-                logoUrl: "https://assets.stickpng.com/thumbs/623afe1627d4946aceae2fc5.png",
                 description: "A web portal and search engine in the Czech Republic."
             },
         }
@@ -177,7 +175,6 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 name: "Yandex Images",
                 shortcut: "y",
                 query: "https://yandex.com/images/search?text={searchTerms}",
-                logoUrl: "https://assets.stickpng.com/images/623b00a027d4946aceae2fdb.png",
                 description: "The photo search portion of a search engine and web portal popular in Russia."
             },
         }

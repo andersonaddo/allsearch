@@ -16,7 +16,7 @@ export const findOptimalOverlayOpacity = (
 
   //https://www.w3.org/WAI/WCAG21/quickref/?versions=2.0#qr-visual-audio-contrast-contrast
   //If it wasn't for the fact that our main page also has small text, we could have used 3
-  //It's supposed ot be 4.5 but I increased it a bit based on empirical findings
+  //It's supposed to be 4.5 but I (may have) increased it a bit based on empirical findings
   const desiredContrast = 4.5;
 
   const averageColor = getColorToRepresentImage(imageData, textColor);
