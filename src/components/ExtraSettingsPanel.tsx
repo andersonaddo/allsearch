@@ -66,7 +66,8 @@ export const ExtraSettingsPanel = () => {
         if (isInDevMode()) console.error(err)
         setImportErrorMessage(err?.message)
         setInfoModalOpen()
-      }
+      },
+      toast
     )
   }
 

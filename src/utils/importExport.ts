@@ -1,3 +1,4 @@
+import { useToast } from "@chakra-ui/react";
 import { defaultSearchEngineCategories } from "../data/defaultSearchEngines";
 import { ConfigExport, ConfigImport, NonFatalImportErrors } from "../types/importExportTypes";
 import { AutoActivationRuleDefinition, RuleId, StringReplacementRuleDefinition } from "../types/rulesTypes";
@@ -30,7 +31,8 @@ export function exportAllsearchConfiguration() {
 export async function importAllsearchConfiguration(
     importObj: ConfigImport,
     onNonFatalError: (a: NonFatalImportErrors) => void,
-    onFatalError: (a: any) => void) {
+    onFatalError: (a: any) => void,
+    toast : ReturnType<typeof useToast>) {
 
     try {
         //*******First let's get local versions of everything that will be affected*******
@@ -215,6 +217,3 @@ export async function importAllsearchConfiguration(
     }
 }
 
-function toast(arg0: { title: string; description: string; status: string; duration: number; isClosable: boolean; }) {
-    throw new Error("Function not implemented.");
-}
