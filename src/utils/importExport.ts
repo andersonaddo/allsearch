@@ -13,6 +13,8 @@ export function exportAllsearchConfiguration() {
         storedRules: getRules(),
         activeRules: getActiveRules(),
         miscSettings: getMiscSettingsConfig(),
+        //Allsearch stored background info (ie BackgroundProvider) isn't exported at the moment.
+        //Take a look at BackgroundProvider to see tome TODOs to think about before you try and include it.
     }
 
     //https://stackoverflow.com/a/30800715
@@ -27,7 +29,6 @@ export function exportAllsearchConfiguration() {
 
 //TODO: currently this checks for type matches (so like, strings should be strings)
 //But doesn't check for things like queries having {searchTerms} in them
-
 export async function importAllsearchConfiguration(
     importObj: ConfigImport,
     onNonFatalError: (a: NonFatalImportErrors) => void,

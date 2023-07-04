@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchNewBackgroundInfoFromApi } from "./backgroundFetchApi";
-import { BACKGROUND_INFO_STORAGE_KEY, clearKey, getBackgroundInfo, getMiscSettingsConfig, setBackgroundInfo } from "./storage";
+import { BACKGROUND_INFO_STORAGE_KEY, clearKey, getBackgroundInfo_UNSAFE, getMiscSettingsConfig, setBackgroundInfo_UNSAFE } from "./storage";
 
 export type BackgroundInfo = {
     timestamp: number
@@ -8,7 +8,15 @@ export type BackgroundInfo = {
     author: string,
     sourceUrl: string,
     sourceName: string,
-    isUserDefined: boolean
+    isUserDefined: boolean,
+    backgroundContainerFetchUrl: string,
+    //^
+    //For dynamically fetched photos, this is the same as the `url`
+    //For user defined photos, this might point to our CORS proxy server
+    //Note for considering BackgroundInfo in Allsearch config exports later on:
+    //Any reasonably tech-savvy user should be able to get backgroundContainerFetchUrl
+    //but looking at the website source or at their browser's localstorage, but I would
+    //prefer if we don't make it even easier by making it part of exports. Think about that!
 }
 
 export type BackgroundInfoChangeEvent = CustomEvent<{ info: BackgroundInfo | null }>
@@ -18,14 +26,23 @@ fetchNewBackgroundImage(false) //Start out with this as soon as possible
 export async function fetchNewBackgroundImage(forceNewDynamicBackground: boolean) {
     try {
         if (getMiscSettingsConfig().userDefinedBackgroundEnabled) return
-        if (!forceNewDynamicBackground && !isStoredBackgroundInfoStale(getBackgroundInfo())) return;
+        if (!forceNewDynamicBackground && !isStoredBackgroundInfoStale(getBackgroundInfo_UNSAFE())) return;
 
         const newInfo = await fetchNewBackgroundInfoFromApi()
-        setBackgroundInfo(newInfo)
+        setBackgroundInfo_UNSAFE(newInfo)
         broadcastNewBackgroundInfo(newInfo)
     } catch (e: any) {
         console.error(e)
     }
+}
+
+/**
+ * Returns null if the stored background image info is stale
+ */
+export const getBackgroundImageInfoOneShot = () => {
+    const storedInfo = getBackgroundInfo_UNSAFE()
+    if (isStoredBackgroundInfoStale(storedInfo)) return null;
+    return storedInfo;
 }
 
 //Custom hooks
@@ -38,14 +55,14 @@ export const useBackgroundImageInfo = (): BackgroundInfo | null => {
             setBackgroundImageInfo(e.detail.info)
         }
 
-        subscribeToDetailsChange(changeHandler, backgroundImageInfo)
+        subscribeToDetailsChange(changeHandler)
         return () => unsubscribeFromDetailsChange(changeHandler)
-    })
+    }, [])
 
     return backgroundImageInfo;
 }
 
-export function setUserDefinedBackgroundViaURL(url: string): void {
+export function setUserDefinedBackgroundViaURL(url: string, backgroundContainerFetchUrl: string): void {
     const newInfo: BackgroundInfo = {
         timestamp: 0,
         url,
@@ -53,9 +70,10 @@ export function setUserDefinedBackgroundViaURL(url: string): void {
         sourceUrl: "",
         sourceName: "",
         isUserDefined: true,
+        backgroundContainerFetchUrl
     }
 
-    setBackgroundInfo(newInfo)
+    setBackgroundInfo_UNSAFE(newInfo)
     broadcastNewBackgroundInfo(newInfo)
 }
 
@@ -71,18 +89,17 @@ function isStoredBackgroundInfoStale(storedInfo: BackgroundInfo | null): storedI
     const currentDate = new Date();
 
     //Never mind the fact that this would return true if you last used Allsearch exactly
-    //a year ago :)
+    //a month ago :)
     if (fetchDate.getDate() !== currentDate.getDate()) return true;
     return false;
 }
 
-function subscribeToDetailsChange(callback: (e: BackgroundInfoChangeEvent) => void, lastSeenInfo: BackgroundInfo | null) {
-    //If there's already something good stored, we can make use of that immediately
-    //by artificially dispatching an event to the callback before subscribing.
+function subscribeToDetailsChange(callback: (e: BackgroundInfoChangeEvent) => void) {
     //"allsearchBackgroundInfoChange" added to type system in src/types/events.d.ts
 
-    const storedInfo = getBackgroundInfo()
-    if (storedInfo?.timestamp !== lastSeenInfo?.timestamp && !isStoredBackgroundInfoStale(storedInfo))
+    //If there's already non-stale background information at hand, call the callback on that immediately
+    const storedInfo = getBackgroundInfo_UNSAFE()
+    if (!isStoredBackgroundInfoStale(storedInfo))
         callback(new CustomEvent("allsearchBackgroundInfoChange", { detail: { info: storedInfo } }))
 
     document.addEventListener("allsearchBackgroundInfoChange", callback);

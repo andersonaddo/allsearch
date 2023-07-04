@@ -84,3 +84,7 @@ export const activateMacro = (query: string, macro: MacroDefinition) => {
 export function getRandomInt(maxExclusive: number | undefined) {
     return Math.floor(Math.random() * (maxExclusive ?? 0));
 }
+
+export function appendUrlToProxyServerUrl(url: string) {
+    return `${process.env.REACT_APP_ALLORIGINS_CORS_PROXY_SERVER}/raw?url=${encodeURIComponent(url)}`
+}

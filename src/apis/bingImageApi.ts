@@ -39,6 +39,7 @@ export const fetchBackgroundFromBing = async (): Promise<BackgroundInfo> => {
         sourceUrl: results.data.copyright_link || "",
         timestamp: new Date().getTime(),
         sourceName: "Bing",
-        isUserDefined: false
+        isUserDefined: false,
+        backgroundContainerFetchUrl: url
     }
 }

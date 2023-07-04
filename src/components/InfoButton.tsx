@@ -1,24 +1,20 @@
 import { IconButton, Image, Popover, PopoverArrow, PopoverBody, PopoverCloseButton, PopoverContent, PopoverHeader, PopoverTrigger, Text, useDisclosure } from "@chakra-ui/react";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { BiHelpCircle } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-import { recordInfoButtonPopoverShown, shouldShowInfoButtonPopover, showInfoButtonPopoverInNewUserMode } from "../utils/onboardingManager";
+import { recordInfoButtonIntroductionShown, shouldShowInfoButtonAllsearchIntroduction } from "../utils/onboardingManager";
 
 const InfoButton: React.FC = () => {
     const navigate = useNavigate();
 
     const { isOpen, onOpen: setPopoverOpen, onClose: setPopoverClose } = useDisclosure()
 
-    //Should we show the popup with a design consistent with a new user, or an existing user with a new version
-    const [openAsNewUser, setOpenAsNewUser] = useState(false)
-
     useEffect(() => {
-        const shouldOpen = shouldShowInfoButtonPopover()
-        if (shouldOpen){
-            recordInfoButtonPopoverShown()
+        const shouldOpen = shouldShowInfoButtonAllsearchIntroduction()
+        if (shouldOpen) {
+            recordInfoButtonIntroductionShown()
             setPopoverOpen()
-            setOpenAsNewUser(showInfoButtonPopoverInNewUserMode())
         }
     }, [setPopoverOpen])
 
@@ -46,28 +42,21 @@ const InfoButton: React.FC = () => {
             </PopoverTrigger>
             <PopoverContent bg="salmon" color="black" >
                 <PopoverHeader fontWeight='semibold'>
-                    {openAsNewUser ? "Hello! New here?" : "We got some new stuff!"}
+                    Hello! New here?
                 </PopoverHeader>
                 <PopoverArrow bg="salmon" />
                 <PopoverCloseButton />
                 <PopoverBody>
                     <Image
-                        src={openAsNewUser ? require("../media/pusheen-hello.gif") :
-                            require("../media/pusheen-cat-celebrate.gif")}
+                        src={require("../media/pusheen-hello.gif")}
 
                         height={"120px"}
                         borderRadius="8px"
                     />
 
-                    {openAsNewUser ?
-                        (<Text color="black">
-                            Learn some quick basics of Allsearch here! <i>Very short.</i>
-                        </Text>) :
-                        (<Text color="black">
-                            We have some new features worth talking about.
-                        </Text>)
-                    }
-
+                    <Text color="black">
+                        Learn some quick basics of Allsearch here! <i>Very short.</i>
+                    </Text>
                 </PopoverBody>
             </PopoverContent>
         </Popover>

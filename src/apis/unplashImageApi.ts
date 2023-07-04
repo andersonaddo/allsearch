@@ -77,6 +77,7 @@ export const fetchBackgroundFromUnplash = async (): Promise<BackgroundInfo> => {
         sourceUrl: results.data.at(chosenIndex)?.links?.html || "",
         timestamp: new Date().getTime(),
         sourceName: "Unsplash",
-        isUserDefined: false
+        isUserDefined: false,
+        backgroundContainerFetchUrl: url
     }
 }

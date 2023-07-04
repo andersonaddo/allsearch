@@ -49,9 +49,11 @@ export const defaultActiveRules: ActiveRules = {
 
 export const defaultSessionAggregationInfo: SessionAggregationInfo = {
     currentVersion: currentVersionForOnboarding,
+    versionInLastSession: currentVersionForOnboarding,
     totalLaunches: 0,
     launchesThisVersion: 0,
-    infoButtonPopoverShown: false
+    infoButtonAllsearchIntroductionShown: false,
+    newVersionModalShown: false
 }
 
 export const defaultMiscSettings : MiscSettingsConfig = {

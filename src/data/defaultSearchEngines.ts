@@ -97,7 +97,8 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 name: "Yandex",
                 shortcut: "y",
                 query: "https://yandex.com/search?text={searchTerms}",
-                description: "A search engine and web portal popular in Russia."
+                description: "A search engine and web portal popular in Russia.",
+                logoUrl: "https://cdn.icon-icons.com/icons2/699/PNG/512/yandex_en_icon-icons.com_61632.png"
             },
             mojeek: {
                 name: "Mojeek",
@@ -131,7 +132,8 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 name: "Seznam",
                 shortcut: "z",
                 query: "https://search.seznam.cz/?q={searchTerms}",
-                description: "A web portal and search engine in the Czech Republic."
+                description: "A web portal and search engine in the Czech Republic.",
+                logoUrl: "https://e7.pngegg.com/pngimages/182/349/png-clipart-symbol-trademark-number-seznam-trademark-logo-thumbnail.png"
             },
         }
     },
@@ -175,7 +177,8 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 name: "Yandex Images",
                 shortcut: "y",
                 query: "https://yandex.com/images/search?text={searchTerms}",
-                description: "The photo search portion of a search engine and web portal popular in Russia."
+                description: "The photo search portion of a search engine and web portal popular in Russia.",
+                logoUrl: "https://cdn.icon-icons.com/icons2/699/PNG/512/yandex_en_icon-icons.com_61632.png"
             },
         }
     },
@@ -214,7 +217,8 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 name: "SearchOnMath",
                 shortcut: "m",
                 query: "https://www.searchonmath.com/result/?q={searchTerms}",
-                description: "A powerful search engine for mathematical formulas with LaTeX support. Requires a monthly subscription from its users."
+                description: "A powerful search engine for mathematical formulas with LaTeX support. Requires a monthly subscription from its users.",
+                logoUrl: "https://play-lh.googleusercontent.com/SD8u-Jb3T4VHYxH2-YjdHHPaUoZLUd_AVXK2_E3YMPoRMFiYsujyztCTz6c1T8boY43N"
             },
         }
     },

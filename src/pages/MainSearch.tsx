@@ -13,6 +13,7 @@ import { fetchNewBackgroundImage, useBackgroundImageInfo } from "../utils/backgr
 import { autoActivateEnginesFromRules } from "../utils/ruleActivation";
 import { getHotbar, getMiscSettingsConfig } from "../utils/storage";
 import { getMacroFromId, getSearchEngineFromId, stringToUrl } from "../utils/utils";
+import NewVersionModal from "../components/NewVersionModal"
 
 
 export const MainSearch = () => {
@@ -155,6 +156,8 @@ export const MainSearch = () => {
         maxWidth="100%"
         height="100vh"
       >
+
+        <NewVersionModal />
         <VStack height="100%" width="85%" spacing={"20"}>
 
           <HStack

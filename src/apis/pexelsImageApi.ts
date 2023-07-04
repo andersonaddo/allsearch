@@ -62,6 +62,7 @@ export const fetchBackgroundFromPexels = async (): Promise<BackgroundInfo> => {
         sourceUrl: results.data.photos?.at(chosenIndex)?.url || "",
         timestamp: new Date().getTime(),
         sourceName: "Pexels",
-        isUserDefined: false
+        isUserDefined: false,
+        backgroundContainerFetchUrl: url
     }
 }

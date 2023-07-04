@@ -1,19 +1,20 @@
 import {
   Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Button, Checkbox, Code, Divider, FormControl, FormErrorMessage, FormLabel,
-  Heading, Input, Text, useDisclosure, useToast, VStack
+  Heading, Input, Text, useColorModeValue, useDisclosure, useToast, VStack
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { LineWobble } from '@uiball/loaders';
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ConfigImport, NonFatalImportErrors } from "../types/importExportTypes";
 import { clearBackgroundInfo, fetchNewBackgroundImage, setUserDefinedBackgroundViaURL } from "../utils/backgroundProvider";
 import { exportAllsearchConfiguration, importAllsearchConfiguration } from "../utils/importExport";
 import {
   ACTIVE_RULES_STORAGE_KEY, clearKey, CUSTOM_ENG_STORAGE_KEY,
-  EXTRA_MISC_SETTINGS, getBackgroundInfo, getMiscSettingsConfig, HOTBAR_STORAGE_KEY, MACROS_STORAGE_KEY,
+  EXTRA_MISC_SETTINGS, getBackgroundInfo_UNSAFE, getMiscSettingsConfig, HOTBAR_STORAGE_KEY, MACROS_STORAGE_KEY,
   ONBOARDING_AGG_INFO_STORAGE_KEY,
   setMiscSettingsConfig,
   STORED_RULES_STORAGE_KEY
 } from "../utils/storage";
-import { isInDevMode } from "../utils/utils";
+import { appendUrlToProxyServerUrl, isInDevMode } from "../utils/utils";
 import GenericInfo from "./GenericInfo";
 import GenericWarning from "./GenericWarning";
 import Spacer from "./Spacer";
@@ -26,9 +27,13 @@ export const ExtraSettingsPanel = () => {
   const [nonFatalImportErrors, setNonFatalImportErrors] = useState("")
 
   const [clipboardCheckboxChecked, setClipboardCheckboxChecked] = useState(false)
+
+  const initialValueOfUserDefinedUrl = useMemo(() => (getBackgroundInfo_UNSAFE()?.isUserDefined && getBackgroundInfo_UNSAFE()?.url) || "", [])
   const [userDefinedBackgroundCheckboxChecked, setUserDefinedBackgroundCheckboxChecked] = useState(false)
-  const [userDefinedBackgroundUrlValid, setSserDefinedBackgroundUrlValid] = useState(false)
-  const userDefinedBackgroundUrl = useRef<string>("")
+  const [userDefinedBackgroundUrlValid, setUserDefinedBackgroundUrlValid] = useState(false)
+  const [checkingUserDefinedBackgroundUrlCORSCompatibility, setCheckingUserDefinedBackgroundUrlCORSCompatibility] = useState(false)
+  const corsCheckLoadingIndicatorColor = useColorModeValue("gol", "white")
+  const userDefinedBackgroundUrl = useRef<string>(initialValueOfUserDefinedUrl)
 
   const { isOpen: isImportModalOpen, onOpen: setImportModalOpen, onClose: setImportModalClose } = useDisclosure()
   const { isOpen: isNonFatalModalOpen, onOpen: setNonFatalModalOpen, onClose: setNonFatalModalClose } = useDisclosure()
@@ -44,9 +49,58 @@ export const ExtraSettingsPanel = () => {
     setUserDefinedBackgroundCheckboxChecked(getMiscSettingsConfig().userDefinedBackgroundEnabled)
   }, [])
 
+  //Resolving true means to issue, resolving false means there was a loading issue
+  async function testImageCORS(url: string) {
+    return new Promise<boolean>((resolve) => {
+      const img = new Image();
+      img.crossOrigin = "Anonymous"
+      img.addEventListener('load', () => resolve(true));
+      img.addEventListener('error', (e) => {
+        console.error(e)
+        resolve(false)
+      });
+      img.src = url;
+    })
+  }
 
-  //TODO: currently this checks for type matches (so like, strings should be strings)
-  //But doesn't check for things like queries having {searchTerms} in them
+
+  //First see if you can do it without our CORS proxy server, then try the proxy if you fail.
+  //We assume any error is due to CORS. If it isn't, no biggie; the CORS proxy will probably just fail too
+  async function determineFetchUrlForImage(url: string) {
+    let testFetchSuccessful = await testImageCORS(url);
+    if (testFetchSuccessful) return url;
+    const proxiedUrl = appendUrlToProxyServerUrl(url)
+    testFetchSuccessful = await testImageCORS(proxiedUrl);
+    if (testFetchSuccessful) return proxiedUrl;
+    return ""
+  }
+
+  async function testAndSetUserDefinedBackgroundUrl() {
+    if (!userDefinedBackgroundUrlValid) return;
+    //^^Should never be the case, since under assume guarantee that should be checked beforehand
+    setCheckingUserDefinedBackgroundUrlCORSCompatibility(true)
+    const fetchUrl = await determineFetchUrlForImage(userDefinedBackgroundUrl.current)
+    setCheckingUserDefinedBackgroundUrlCORSCompatibility(false)
+
+    if (fetchUrl) {
+      setUserDefinedBackgroundViaURL(userDefinedBackgroundUrl.current, fetchUrl)
+      toast({
+        title: 'Background Saved!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
+    } else {
+      toast({
+        title: "Allsearch can't use this URL, sorry! Please try another one.",
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
+    }
+  }
+
+
   async function importConfiguration() {
     const file = fileInputRef.current?.files?.item(0)
     setInvalidFileInput(!file)
@@ -153,26 +207,33 @@ export const ExtraSettingsPanel = () => {
         <VStack>
           <URLInputField
             label="Background URL"
-            initialValue={(getBackgroundInfo()?.isUserDefined && getBackgroundInfo()?.url) || ""}
-            helperText="If the URL is valid but the homepage background is still blank, it's probably because the URL's server is rejecting Allsearch. This is rare, but can happen. Try another photo."
-            onValidityChange={(isValid) => setSserDefinedBackgroundUrlValid(isValid)}
+            initialValue={initialValueOfUserDefinedUrl}
+            helperText="Enter the url for the image you want for your Allsearch background."
+            onValidityChange={(isValid) => setUserDefinedBackgroundUrlValid(isValid)}
             onValueChange={(value) => userDefinedBackgroundUrl.current = value}
             isRequired={true}
-            isDisabled={!userDefinedBackgroundCheckboxChecked}
+            isDisabled={!userDefinedBackgroundCheckboxChecked || checkingUserDefinedBackgroundUrlCORSCompatibility}
           />
 
-          <Button
-            isDisabled={!userDefinedBackgroundUrlValid}
-            onClick={() => {
-              setUserDefinedBackgroundViaURL(userDefinedBackgroundUrl.current)
-              toast({
-                title: 'Background Saved!',
-                status: 'success',
-                duration: 3000,
-                isClosable: true,
-              })
+          {checkingUserDefinedBackgroundUrlCORSCompatibility &&
+            <>
 
-            }}>
+              <VStack alignSelf="flex-start">
+                <Text>Testing Allsearch compatibility...</Text>
+                <LineWobble
+                  size={190}
+                  lineWeight={5}
+                  speed={2}
+                  color={corsCheckLoadingIndicatorColor}
+                />
+              </VStack>
+              <Spacer size={8} axis={"vertical"} />
+            </>
+          }
+
+          <Button
+            isDisabled={!userDefinedBackgroundUrlValid || checkingUserDefinedBackgroundUrlCORSCompatibility}
+            onClick={testAndSetUserDefinedBackgroundUrl}>
             Save
           </Button>
 

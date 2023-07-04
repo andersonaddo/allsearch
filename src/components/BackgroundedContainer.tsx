@@ -15,34 +15,7 @@ export const BackgroundedContainer: React.FC<PropsWithChildren<ContainerProps>> 
     const [overlayOpacity, setOverlayOpacity] = useState<number>(0)
     const backgroundInfo = useBackgroundImageInfo();
 
-    const fetchFromCORSProxy = React.useCallback((url: string) => {
-        return `${process.env.REACT_APP_ALLORIGINS_CORS_PROXY_SERVER}/raw?url=${encodeURIComponent(url)}`
-    }, [])
-
-    const attemptLoadInImage = React.useCallback((url: string) => new Promise<{ img: HTMLImageElement, url: string } | null>((resolve) => {
-        const img = new Image();
-        //Enable CORS for the image so it can be used by the canvas in processImageForOverlayDarkness later...
-        //https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
-        //https://stackoverflow.com/a/51471111/5731044
-        img.crossOrigin = "Anonymous"
-        img.addEventListener('load', () => resolve({ img, url }));
-        img.addEventListener('error', (e) => {
-            console.error(e)
-            resolve(null)
-        });
-        img.src = url;
-    }), []);
-
-
-    //First see if you can do it without our CORS proxy server, then try the proxy if you fail.
-    //We assume any error is due to CORS. If it isn't, no biggie; the CORS proxy will probably just fail too
-    const loadInInMemoryImage = React.useCallback(async (url: string) => {
-        let results = await attemptLoadInImage(url);
-        if (!results) results = await attemptLoadInImage(fetchFromCORSProxy(url));
-        return results
-    }, [fetchFromCORSProxy, attemptLoadInImage])
-
-    const calculateImageOverlayAndRender = React.useCallback((img: HTMLImageElement, src: string) => {
+    const calculateImageOverlayAndRender = React.useCallback((img: HTMLImageElement, fetchUrl: string) => {
         //on getting canvas data: https://stackoverflow.com/a/10755011/5731044
         const temporaryCanvas = document.createElement('canvas');
         const context = temporaryCanvas.getContext('2d');
@@ -57,7 +30,7 @@ export const BackgroundedContainer: React.FC<PropsWithChildren<ContainerProps>> 
         context.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, contrastCanvasDim, contrastCanvasDim);
         const canvasData = context.getImageData(0, 0, contrastCanvasDim, contrastCanvasDim);
         setOverlayOpacity(findOptimalOverlayOpacity(chosenTextColor, overlayColor, canvasData))
-        setLoadedImgSourceUrl(src)
+        setLoadedImgSourceUrl(fetchUrl)
         temporaryCanvas.remove()
     }, []);
 
@@ -67,11 +40,13 @@ export const BackgroundedContainer: React.FC<PropsWithChildren<ContainerProps>> 
     //in the DOM when it's fully loaded in (so we can do a smooth transition)
     useEffect(() => {
         if (!backgroundInfo) return;
-        loadInInMemoryImage(backgroundInfo.url).then(results => {
-            if (!results) return
-            calculateImageOverlayAndRender(results.img, results.url)
-        })
-    }, [calculateImageOverlayAndRender, backgroundInfo, loadInInMemoryImage])
+        const img = new Image()
+        //Enable CORS for the image so it can be used by the canvas in processImageForOverlayDarkness later...
+        //https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
+        img.crossOrigin = "Anonymous"
+        img.src = backgroundInfo.backgroundContainerFetchUrl;
+        img.onload = () => calculateImageOverlayAndRender(img, backgroundInfo.backgroundContainerFetchUrl)
+    }, [calculateImageOverlayAndRender, backgroundInfo])
 
 
     //some useful css tricks: https://css-tricks.com/design-considerations-text-images/

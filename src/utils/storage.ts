@@ -113,13 +113,20 @@ export const removeMacro = (macro: MacroDefinitionWithId) => {
 /**
  * Do not use directly! Background image info should only be read and written via backgroundProvider.ts
  */
-export const getBackgroundInfo = (): BackgroundInfo | null => {
+//Suffixing these with "UNSAFE" even though they're not necessarily unsafe, I just 
+//backgroundProvider to be the only access point for background info
+export const getBackgroundInfo_UNSAFE = (): BackgroundInfo | null => {
     const info = localStorage.getItem(BACKGROUND_INFO_STORAGE_KEY);
     if (!info) return null;
     return JSON.parse(info);
 }
 
-export const setBackgroundInfo = (info: BackgroundInfo): void => {
+/**
+ * Do not use directly! Background image info should only be read and written via backgroundProvider.ts
+ */
+//Suffixing these with "UNSAFE" even though they're not necessarily unsafe, I just 
+//backgroundProvider to be the only access point for background info 
+export const setBackgroundInfo_UNSAFE = (info: BackgroundInfo): void => {
     localStorage.setItem(BACKGROUND_INFO_STORAGE_KEY, JSON.stringify(info));
 }
 
