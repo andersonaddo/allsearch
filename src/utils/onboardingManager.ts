@@ -4,7 +4,7 @@ import { getSessionAggregationInfo, setSessionAggregationInfo } from "./storage"
 //The popup will point users to the About page.
 //------REMEMBER TO UPDATE THE MODAL (src/components/NewVersionModal.tsx) WITH NEW INFO PERTAINING TO THIS NEW VERSION------
 //(that modal also has the ability to do things needed to migrate between versions on first visit of a new version)
-export const currentVersionForOnboarding: number = 4;
+export const currentVersionForOnboarding: number = 5;
 
 export interface SessionAggregationInfo {
     currentVersion: number,

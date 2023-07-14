@@ -1,4 +1,4 @@
-import { useDisclosure } from "@chakra-ui/react";
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from "@chakra-ui/react";
 import * as React from "react";
 import { useCallback, useEffect } from "react";
 import { fetchNewBackgroundImage, getBackgroundImageInfoOneShot, setUserDefinedBackgroundViaURL } from "../utils/backgroundProvider";
@@ -36,27 +36,27 @@ const NewVersionModal: React.FC = () => {
         }
     }, [setModalOpen, transformDataIfNecessary])
 
-    return null; //You can uncomment the stuff below if you actually want to render something.
+    // return null; //You can uncomment the stuff below if you actually want to render something.
 
-    // return (
-    //     <Modal isOpen={isOpen} onClose={setModalClose} size="4xl">
-    //         <ModalOverlay
-    //             bg='blackAlpha.300'
-    //             backdropFilter='blur(10px) hue-rotate(20deg)'
-    //         />
-    //         <ModalContent>
-    //             <ModalHeader>
-    //                 Allsearch just got better!
-    //             </ModalHeader>
+    return (
+        <Modal isOpen={isOpen} onClose={setModalClose} size="4xl">
+            <ModalOverlay
+                bg='blackAlpha.300'
+                backdropFilter='blur(10px) hue-rotate(20deg)'
+            />
+            <ModalContent>
+                <ModalHeader>
+                    Allsearch just got better!
+                </ModalHeader>
 
-    //             <ModalCloseButton />
+                <ModalCloseButton />
 
-    //             <ModalBody>
-    //                 This is a test
-    //             </ModalBody>
-    //         </ModalContent>
-    //     </Modal >
-    // )
+                <ModalBody>
+                    We added more search engines in the "Niche Engines" category. Check them out!
+                </ModalBody>
+            </ModalContent>
+        </Modal >
+    )
 }
 
 export default React.memo(NewVersionModal)
