@@ -114,12 +114,12 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 logoUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2b/Qwant-Icone-2022.svg",
                 description: "A French meta search engine, launched in February 2013 and operated from Paris. It is one of the few EU-based meta-search engines."
             },
-            searx: {
-                name: "SearX",
+            searx: { //SearXNG has the searx id because initially I didn't know they were 2 different things (I only knew about searx).
+                name: "SearXNG",
                 shortcut: "x",
                 query: "https://searx.org/search?q={searchTerms}",
-                description: "A free and open-source metasearch engine, available under the GNU Affero General Public License version 3. Searx does not share users' IP addresses or search history with the search engines from which it gathers results.",
-                logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Searx_logo.svg/524px-Searx_logo.svg.png",
+                description: "A free and open-source metasearch engine, available under the AGPL-3.0 license. Different from SearX, which is a predecessor that is updated less frequently and designed for private use. Find more SearXNG instances at https://github.com/searxng/searxng",
+                logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/SearXNG-wordmark.svg/326px-SearXNG-wordmark.svg.png",
             },
             mwmbl: {
                 name: "MWMBL",
@@ -255,6 +255,33 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 description: "A union catalog that itemizes the collections of tens of thousands of institutions, in many countries, that are current or past members of the OCLC global cooperative.",
                 logoUrl: "https://library.stlawu.edu/sites/default/files/2020-02/worldcat-logo.png"
             },
+            //https://news.ycombinator.com/item?id=3910304
+            //https://news.ycombinator.com/item?id=30912733
+            //Inclusing only this version because the normal millionshort.com is down atm
+            millionshortsanction:{
+                name: "Millionshort (+ sanction)",
+                shortcut: "h",
+                query: "https://sanction.millionshort.com/search?keywords={searchTerms}&remove=",
+                description: "A search engine that can exclude the top 100-1,000,000 websites from search results and also sanction results by country.",
+                logoUrl: "https://pbs.twimg.com/profile_images/2624353171/gh9lof2wbak4x15fe0n1.png"
+            },
+            //https://news.ycombinator.com/item?id=23203100
+            //https://news.ycombinator.com/item?id=19604135
+            wiby:{
+                name: "Wiby",
+                shortcut: "w",
+                query: "https://wiby.me/?q={searchTerms}",
+                description: "The Wiby search engine is building a web of pages as it was in the earlier days of the internet. Manually curated.",
+                logoUrl: "https://pbs.twimg.com/profile_images/967952274147500032/xdxjE51-_400x400.jpg"
+            },
+            //https://news.ycombinator.com/item?id=30912733
+            breeze:{
+                name: "Breeze",
+                shortcut: "b",
+                query: "https://breezethat.com/#gsc.tab=0&gsc.q={searchTerms}&gsc.sort=",
+                description: "An engine that can also specialize in looking for recipes, Reddit posts, blog posts, and others. More specialties at https://breezethat.com/topics",
+                logoUrl: "https://scontent-lga3-2.xx.fbcdn.net/v/t39.30808-6/295245696_354782843512370_9129904740840257937_n.png?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=sBNjO2x0mzkAX-9lr03&_nc_ht=scontent-lga3-2.xx&oh=00_AfDcjFXi1sKT2SE1SbfyzU5VJVA7AYH69enClW0GJn-yPw&oe=64B64D0D"
+            }
         }
     }
 }
