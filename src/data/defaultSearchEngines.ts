@@ -114,7 +114,7 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 logoUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2b/Qwant-Icone-2022.svg",
                 description: "A French meta search engine, launched in February 2013 and operated from Paris. It is one of the few EU-based meta-search engines."
             },
-            searx: { //SearXNG has the searx id because initially I didn't know they were 2 different things (I only knew about searx).
+            searx: { //SearXNG has the searx id because initially I didn't know SearXNG and SearX were 2 different things (I only knew about searx).
                 name: "SearXNG",
                 shortcut: "x",
                 query: "https://searx.org/search?q={searchTerms}",
@@ -257,12 +257,11 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
             },
             //https://news.ycombinator.com/item?id=3910304
             //https://news.ycombinator.com/item?id=30912733
-            //Inclusing only this version because the normal millionshort.com is down atm
-            millionshortsanction:{
-                name: "Millionshort (+ sanction)",
+            millionshortsanction:{ //ID is called millionshortsanction because it used to link to sanction.millionshort.com
+                name: "Millionshort",
                 shortcut: "h",
-                query: "https://sanction.millionshort.com/search?keywords={searchTerms}&remove=",
-                description: "A search engine that can exclude the top 100-1,000,000 websites from search results and also sanction results by country.",
+                query: "https://millionshort.com/search?keywords={searchTerms}",
+                description: "A freemium search engine that can exclude the top 100-1,000,000 websites from search results. Mostly requires a monthly subscription from its users.",
                 logoUrl: "https://pbs.twimg.com/profile_images/2624353171/gh9lof2wbak4x15fe0n1.png"
             },
             //https://news.ycombinator.com/item?id=23203100
