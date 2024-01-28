@@ -230,7 +230,7 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
             marginalia: {
                 name: "Marginalia",
                 shortcut: "m",
-                query: "https://search.marginalia.nu/search?q={searchTerms}",
+                query: "https://search.marginalia.nu/search?query={searchTerms}",
                 description: "	A search engine that favors text-heavy sites and punishes modern web design."
             },
             //https://news.ycombinator.com/item?id=29161545
