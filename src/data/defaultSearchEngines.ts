@@ -280,6 +280,13 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 query: "https://breezethat.com/#gsc.tab=0&gsc.q={searchTerms}&gsc.sort=",
                 description: "An engine that can also specialize in looking for recipes, Reddit posts, blog posts, and others. More specialties at https://breezethat.com/topics",
                 logoUrl: "https://scontent-lga3-2.xx.fbcdn.net/v/t39.30808-6/295245696_354782843512370_9129904740840257937_n.png?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=sBNjO2x0mzkAX-9lr03&_nc_ht=scontent-lga3-2.xx&oh=00_AfDcjFXi1sKT2SE1SbfyzU5VJVA7AYH69enClW0GJn-yPw&oe=64B64D0D"
+            },
+            phind:{
+                name: "Phind",
+                shortcut: "p",
+                query: "https://www.phind.com/search?q={searchTerms}&ignoreSearchResults=false",
+                description: "An engine that uses LLMs to summarize what it finds, while also providing sources.",
+                logoUrl: "https://media.licdn.com/dms/image/C4D0BAQGvPaqOrm8T2g/company-logo_200_200/0/1676697540010/phindsearch_logo?e=1715817600&v=beta&t=VBIj4Zx09vvWAkK3SW8LI4tNexhi_B1It-jYyKcGgjg"
             }
         }
     }
