@@ -135,6 +135,34 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 description: "A web portal and search engine in the Czech Republic.",
                 logoUrl: "https://e7.pngegg.com/pngimages/182/349/png-clipart-symbol-trademark-number-seznam-trademark-logo-thumbnail.png"
             },
+            swisscows: {
+                name: "Swisscows",
+                shortcut: "s",
+                query: "https://swisscows.com/en/web?query={searchTerms}",
+                description: "Swisscows is a web search engine launched in 2014, a project of Hulbee AG, a company based in Egnach, Switzerland.",
+                logoUrl: "https://addons.mozilla.org/user-media/userpics/88/2688/6642688/6642688.png?modified=1621855469"
+            },
+            metager: {
+                name: "Metager",
+                shortcut: "m",
+                query: "https://metager.org/meta/meta.ger3?eingabe={searchTerms}",
+                description: "MetaGer is a metasearch engine focused on protecting users' privacy. Based in Germany.",
+                logoUrl: "https://pbs.twimg.com/profile_images/1182263888282345473/x4RH7uBc_400x400.png"
+            },
+            stract: {
+                name: "Stract",
+                shortcut: "s",
+                query: "https://stract.com/search?q={searchTerms}",
+                description: "An open source web search engine hosted at stract.com targeted towards tinkerers and developer.",
+                logoUrl: "https://avatars.githubusercontent.com/u/68652867?s=200&v=4"
+            },
+            presearch: {
+                name: "Presearch",
+                shortcut: "p",
+                query: "https://presearch.com/search?q={searchTerms}",
+                description: "A community-powered, decentralized search engine.",
+                logoUrl: "https://cryptologos.cc/logos/presearch-pre-logo.png?v=029"
+            }
         }
     },
     images: {
