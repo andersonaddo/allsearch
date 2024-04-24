@@ -285,7 +285,7 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
             },
             //https://news.ycombinator.com/item?id=3910304
             //https://news.ycombinator.com/item?id=30912733
-            millionshortsanction:{ //ID is called millionshortsanction because it used to link to sanction.millionshort.com
+            millionshortsanction: { //ID is called millionshortsanction because it used to link to sanction.millionshort.com
                 name: "Millionshort",
                 shortcut: "h",
                 query: "https://millionshort.com/search?keywords={searchTerms}",
@@ -294,7 +294,7 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
             },
             //https://news.ycombinator.com/item?id=23203100
             //https://news.ycombinator.com/item?id=19604135
-            wiby:{
+            wiby: {
                 name: "Wiby",
                 shortcut: "w",
                 query: "https://wiby.me/?q={searchTerms}",
@@ -302,19 +302,27 @@ export const defaultSearchEngineCategories: Record<SearchEngineCategoryId, Searc
                 logoUrl: "https://pbs.twimg.com/profile_images/967952274147500032/xdxjE51-_400x400.jpg"
             },
             //https://news.ycombinator.com/item?id=30912733
-            breeze:{
+            breeze: {
                 name: "Breeze",
                 shortcut: "b",
                 query: "https://breezethat.com/#gsc.tab=0&gsc.q={searchTerms}&gsc.sort=",
                 description: "An engine that can also specialize in looking for recipes, Reddit posts, blog posts, and others. More specialties at https://breezethat.com/topics",
                 logoUrl: "https://scontent-lga3-2.xx.fbcdn.net/v/t39.30808-6/295245696_354782843512370_9129904740840257937_n.png?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=sBNjO2x0mzkAX-9lr03&_nc_ht=scontent-lga3-2.xx&oh=00_AfDcjFXi1sKT2SE1SbfyzU5VJVA7AYH69enClW0GJn-yPw&oe=64B64D0D"
             },
-            phind:{
+            phind: {
                 name: "Phind",
                 shortcut: "p",
                 query: "https://www.phind.com/search?q={searchTerms}&ignoreSearchResults=false",
                 description: "An engine that uses LLMs to summarize what it finds, while also providing sources.",
                 logoUrl: "https://media.licdn.com/dms/image/C4D0BAQGvPaqOrm8T2g/company-logo_200_200/0/1676697540010/phindsearch_logo?e=1715817600&v=beta&t=VBIj4Zx09vvWAkK3SW8LI4tNexhi_B1It-jYyKcGgjg"
+            },
+            //https://news.ycombinator.com/item?id=39799752
+            feedle: {
+                name: "Feedle",
+                shortcut: "f",
+                query: "https://feedle.world/search?query={searchTerms}",
+                description: "A search engine for blogs and podcasts. Manually curated. NOTE: Searches on this engine do not always work.",
+                logoUrl: "https://files.mastodon.social/accounts/avatars/110/050/235/795/384/512/original/53bfd4dcf651bb24.jpeg"
             }
         }
     }
