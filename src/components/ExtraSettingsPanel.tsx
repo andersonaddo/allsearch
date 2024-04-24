@@ -1,6 +1,6 @@
 import {
   Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Button, Checkbox, Code, Divider, FormControl, FormErrorMessage, FormLabel,
-  Heading, Input, Text, useColorModeValue, useDisclosure, useToast, VStack
+  Heading, Input, Kbd, Text, useColorModeValue, useDisclosure, useToast, VStack
 } from "@chakra-ui/react";
 import { LineWobble } from '@uiball/loaders';
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -175,17 +175,6 @@ export const ExtraSettingsPanel = () => {
       <Heading>Extra Functionality</Heading>
 
       <Checkbox
-        isChecked={clipboardCheckboxChecked}
-        onChange={(e) => {
-          setMiscSettingsConfig({ ...getMiscSettingsConfig(), readFromClipboardForQuery: e.target.checked })
-          setClipboardCheckboxChecked(!clipboardCheckboxChecked)
-        }}
-        mb="4"
-      >
-        Pressing the <Code>`</Code> key fills the search bar with the contents of the clipboard. Doesn't work for Firefox.
-      </Checkbox>
-
-      <Checkbox
         isChecked={userDefinedBackgroundCheckboxChecked}
         onChange={(e) => {
           setMiscSettingsConfig({ ...getMiscSettingsConfig(), userDefinedBackgroundEnabled: e.target.checked })
@@ -201,6 +190,25 @@ export const ExtraSettingsPanel = () => {
       >
         User defined Allsearch background.
       </Checkbox>
+
+      <Spacer size={8} axis={"vertical"} />
+
+      <Heading size={"md"}>Keyboard Shortcuts</Heading>
+
+      <Checkbox
+        isChecked={clipboardCheckboxChecked}
+        onChange={(e) => {
+          setMiscSettingsConfig({ ...getMiscSettingsConfig(), readFromClipboardForQuery: e.target.checked })
+          setClipboardCheckboxChecked(!clipboardCheckboxChecked)
+        }}
+        mb="4"
+      >
+        <Kbd>`</Kbd> key fills the search bar with the contents of the clipboard. Doesn't work for Firefox.
+      </Checkbox>
+
+      <Text m="2">
+        <Kbd>Ctrl</Kbd> + <Kbd>G</Kbd> focuses the search bar on the main page.
+      </Text>
 
 
       {userDefinedBackgroundCheckboxChecked &&

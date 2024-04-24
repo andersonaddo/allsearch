@@ -49,12 +49,17 @@ export const MainSearch = () => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent): void => {
       if (!e) return;
-      if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey) return;
-      if (!isTyping) setLastUnfocusedKey(e.key)
-
-      if (e.key === "`") {
-        getQueryFromKeyboard()
+      else if (isTyping) return
+      else if ((e.ctrlKey || e.metaKey) && e.key === "g") {
+        focusInputField()
+        e.preventDefault()
+      }
+      else if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey) return;
+      else if (e.key === "`") {
+        getQueryFromClipboard()
         unfocusInputField()
+      } else {
+        setLastUnfocusedKey(e.key)
       }
     };
 
@@ -98,6 +103,10 @@ export const MainSearch = () => {
     searchInputRef.current?.blur();
   }
 
+  function focusInputField() {
+    searchInputRef.current?.focus();
+  }
+
   function setTabTitle(title: string) {
     //There is a limit to what this title should be, but it's browser dependent
     //https://stackoverflow.com/questions/8516235/max-length-of-title-attribute
@@ -111,7 +120,7 @@ export const MainSearch = () => {
     navigate(`/search?q=${encodeURIComponent(query)}`, { replace: true })
   }
 
-  function getQueryFromKeyboard() {
+  function getQueryFromClipboard() {
     let query = ""
 
     if (typeof navigator.clipboard?.readText !== "function") return; //For Firefox :(
