@@ -171,9 +171,7 @@ export const ExtraSettingsPanel = () => {
     <VStack
       alignItems={"flex-start"} justifyContent={"center"} padding={"0px 16px"}
     >
-
       <Heading>Extra Functionality</Heading>
-
       <Checkbox
         isChecked={userDefinedBackgroundCheckboxChecked}
         onChange={(e) => {
@@ -190,6 +188,41 @@ export const ExtraSettingsPanel = () => {
       >
         User defined Allsearch background.
       </Checkbox>
+
+      {userDefinedBackgroundCheckboxChecked &&
+        <VStack>
+          <URLInputField
+            label="Background URL"
+            initialValue={initialValueOfUserDefinedUrl}
+            helperText="Enter the url for the image you want for your Allsearch background."
+            onValidityChange={(isValid) => setUserDefinedBackgroundUrlValid(isValid)}
+            onValueChange={(value) => userDefinedBackgroundUrl.current = value}
+            isRequired={true}
+            isDisabled={!userDefinedBackgroundCheckboxChecked || checkingUserDefinedBackgroundUrlCORSCompatibility}
+          />
+
+          {checkingUserDefinedBackgroundUrlCORSCompatibility &&
+            <>
+              <VStack alignSelf="flex-start">
+                <Text>Testing Allsearch compatibility...</Text>
+                <LineWobble
+                  size={190}
+                  lineWeight={5}
+                  speed={2}
+                  color={corsCheckLoadingIndicatorColor}
+                />
+              </VStack>
+              <Spacer size={8} axis={"vertical"} />
+            </>
+          }
+
+          <Button
+            isDisabled={!userDefinedBackgroundUrlValid || checkingUserDefinedBackgroundUrlCORSCompatibility}
+            onClick={testAndSetUserDefinedBackgroundUrl}>
+            Save
+          </Button>
+        </VStack>
+      }
 
       <Spacer size={8} axis={"vertical"} />
 
@@ -209,45 +242,6 @@ export const ExtraSettingsPanel = () => {
       <Text m="2">
         <Kbd>Ctrl</Kbd> + <Kbd>G</Kbd> focuses the search bar on the main page.
       </Text>
-
-
-      {userDefinedBackgroundCheckboxChecked &&
-        <VStack>
-          <URLInputField
-            label="Background URL"
-            initialValue={initialValueOfUserDefinedUrl}
-            helperText="Enter the url for the image you want for your Allsearch background."
-            onValidityChange={(isValid) => setUserDefinedBackgroundUrlValid(isValid)}
-            onValueChange={(value) => userDefinedBackgroundUrl.current = value}
-            isRequired={true}
-            isDisabled={!userDefinedBackgroundCheckboxChecked || checkingUserDefinedBackgroundUrlCORSCompatibility}
-          />
-
-          {checkingUserDefinedBackgroundUrlCORSCompatibility &&
-            <>
-
-              <VStack alignSelf="flex-start">
-                <Text>Testing Allsearch compatibility...</Text>
-                <LineWobble
-                  size={190}
-                  lineWeight={5}
-                  speed={2}
-                  color={corsCheckLoadingIndicatorColor}
-                />
-              </VStack>
-              <Spacer size={8} axis={"vertical"} />
-            </>
-          }
-
-          <Button
-            isDisabled={!userDefinedBackgroundUrlValid || checkingUserDefinedBackgroundUrlCORSCompatibility}
-            onClick={testAndSetUserDefinedBackgroundUrl}>
-            Save
-          </Button>
-
-        </VStack>
-
-      }
 
       <SectionSeparator />
       <Heading>Import/Export</Heading>
