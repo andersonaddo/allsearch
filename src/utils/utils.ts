@@ -86,5 +86,5 @@ export function getRandomInt(maxExclusive: number | undefined) {
 }
 
 export function appendUrlToProxyServerUrl(url: string) {
-    return `${process.env.REACT_APP_ALLORIGINS_CORS_PROXY_SERVER}/raw?url=${encodeURIComponent(url)}`
+    return `${process.env.REACT_APP_CORS_PROXY_SERVER}/${url}`
 }
