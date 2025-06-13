@@ -1,10 +1,11 @@
 import { Checkbox, Code, Container, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { AnyRule, ruleIsAutoActivation, ruleIsStringReplacement } from "../types/rulesTypes";
 import { addToActiveRules, getActiveRules, removeFromActiveRules, removeRule } from "../utils/storage";
 import { EnrichTypeWithId, getMacroFromId, getSearchEngineFromId } from "../utils/utils";
+import { useGenericConfirmationModal } from "./GenericWarning";
 
 type MacroListElementProps = {
     rule: EnrichTypeWithId<AnyRule>,
@@ -26,10 +27,15 @@ export const RuleListElement: React.FC<MacroListElementProps> = (props) => {
         else removeFromActiveRules(props.rule.id)
     }
 
-    function deleteRule() {
+    const deleteRule = useCallback(() => {
         removeRule(props.rule)
         props.onRuleDeleted()
-    }
+    }, [props])
+
+    const { modal: DeletionConfirmationModal, trigger: deleteAfterConfirmation } = useGenericConfirmationModal(
+        "Are you sure you want to delete this rule?",
+        deleteRule
+    )
 
     function generateRuleSummary() {
         if (ruleIsStringReplacement(props.rule)) {
@@ -74,6 +80,7 @@ export const RuleListElement: React.FC<MacroListElementProps> = (props) => {
                     <i>{generateRuleSummary()}</i>
                 </Text>
 
+                {DeletionConfirmationModal}
 
                 <IconButton
                     aria-label="Edit"
@@ -86,7 +93,7 @@ export const RuleListElement: React.FC<MacroListElementProps> = (props) => {
                 <IconButton
                     aria-label="Delete"
                     icon={<BsFillTrashFill />}
-                    onClick={deleteRule}
+                    onClick={deleteAfterConfirmation}
                     colorScheme="red"
                     variant='ghost'
                     size='lg'

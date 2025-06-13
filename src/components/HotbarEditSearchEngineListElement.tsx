@@ -1,10 +1,11 @@
 import { Checkbox, Container, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { SearchEngineDefinitionWithId } from "../types/searchEngineTypes";
 import { addToHotbar, getHotbar, removeCustomSearchEngine, removeFromHotbar } from "../utils/storage";
 import { EngineOrMacroLogo } from "./EngineOrMacroLogo";
+import { useGenericConfirmationModal } from "./GenericWarning";
 
 type SearchEngineListElementProps = {
     engine: SearchEngineDefinitionWithId,
@@ -24,10 +25,16 @@ export const SearchEngineListElement: React.FC<SearchEngineListElementProps> = (
         else removeFromHotbar(props.engine.id)
     }
 
-    function deleteSearchEngine() {
+    const deleteSearchEngine = useCallback(() => {
         removeCustomSearchEngine(props.engine)
         props.onEngineDeleted()
-    }
+    }, [props])
+
+    const { modal: DeletionConfirmationModal, trigger: deleteAfterConfirmation } = useGenericConfirmationModal(
+        "Are you sure you want to delete this search engine?",
+        deleteSearchEngine
+    )
+
 
     return (
         <Container maxWidth={"90%"}>
@@ -52,6 +59,8 @@ export const SearchEngineListElement: React.FC<SearchEngineListElementProps> = (
                     <i>{props.engine.description}</i>
                 </Text>
 
+                {DeletionConfirmationModal}
+
                 {props.canEdit && (
                     <>
                         <IconButton
@@ -65,7 +74,7 @@ export const SearchEngineListElement: React.FC<SearchEngineListElementProps> = (
                         <IconButton
                             aria-label="Delete"
                             icon={<BsFillTrashFill />}
-                            onClick={deleteSearchEngine}
+                            onClick={deleteAfterConfirmation}
                             colorScheme="red"
                             variant='ghost'
                             size='lg'

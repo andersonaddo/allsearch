@@ -1,6 +1,6 @@
 import {
     AlertDialog, AlertDialogBody, AlertDialogContent,
-    AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button
+    AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, useDisclosure
 } from "@chakra-ui/react";
 import * as React from "react";
 
@@ -53,4 +53,20 @@ const GenericWarningDialogue: React.FC<WarningProps> = (props) => {
     )
 }
 
-export default React.memo(GenericWarningDialogue)
+const GenericWarning = React.memo(GenericWarningDialogue)
+
+export const useGenericConfirmationModal = (message: string, onConfirm: () => void) => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const modal = <GenericWarning
+        message={message}
+        onClose={onClose}
+        isOpen={isOpen}
+        onConfirm={onConfirm}
+    />
+
+    return { trigger: onOpen, modal }
+
+}
+
+export default GenericWarning

@@ -1,10 +1,11 @@
 import { Checkbox, Container, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import { MacroDefinitionWithId } from "../types/searchEngineTypes";
 import { addToHotbar, getHotbar, removeFromHotbar, removeMacro } from "../utils/storage";
 import { EngineOrMacroLogo } from "./EngineOrMacroLogo";
+import { useGenericConfirmationModal } from "./GenericWarning";
 
 type MacroListElementProps = {
     macro: MacroDefinitionWithId,
@@ -23,10 +24,15 @@ export const MacroListElement: React.FC<MacroListElementProps> = (props) => {
         else removeFromHotbar(props.macro.id)
     }
 
-    function deleteMacro() {
+    const deleteMacro = useCallback(() => {
         removeMacro(props.macro)
         props.onMacroDeleted()
-    }
+    }, [props])
+
+    const { modal: DeletionConfirmationModal, trigger: deleteAfterConfirmation } = useGenericConfirmationModal(
+        "Are you sure you want to delete this macro?",
+        deleteMacro
+    )
 
     return (
         <Container maxWidth={"90%"}>
@@ -52,6 +58,7 @@ export const MacroListElement: React.FC<MacroListElementProps> = (props) => {
                     <i>{props.macro.description}</i>
                 </Text>
 
+                {DeletionConfirmationModal}
 
                 <IconButton
                     aria-label="Edit"
@@ -64,7 +71,7 @@ export const MacroListElement: React.FC<MacroListElementProps> = (props) => {
                 <IconButton
                     aria-label="Delete"
                     icon={<BsFillTrashFill />}
-                    onClick={deleteMacro}
+                    onClick={deleteAfterConfirmation}
                     colorScheme="red"
                     variant='ghost'
                     size='lg'
