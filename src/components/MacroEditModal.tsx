@@ -136,7 +136,7 @@ const MacroModal: React.FC<ModalProps> = (props) => {
                 backdropFilter='blur(10px) hue-rotate(20deg)'
             />
             <ModalContent>
-                <ModalHeader>Custom Engine {inEditMode(props) ? "Editor" : "Creator"}</ModalHeader>
+                <ModalHeader>Macro {inEditMode(props) ? "Editor" : "Creator"}</ModalHeader>
                 <ModalCloseButton />
 
                 <ModalBody>
@@ -151,7 +151,7 @@ const MacroModal: React.FC<ModalProps> = (props) => {
                     </FormControl>
 
                     <FormControl mb="4">
-                        <FormLabel>Engine Description</FormLabel>
+                        <FormLabel>Macro Description</FormLabel>
                         <Input
                             onChange={(e) => setDescriptionInput(e.target.value)}
                             value={descriptionInput}
@@ -160,7 +160,7 @@ const MacroModal: React.FC<ModalProps> = (props) => {
 
                     <Flex direction={"row"} alignItems="center">
                         <FormControl mb="4" isInvalid={logoUrlInvalid}>
-                            <FormLabel>Engine Logo Url</FormLabel>
+                            <FormLabel>Macro Logo Url</FormLabel>
                             <Input
                                 onChange={(e) => setLogoUrlInput(e.target.value)}
                                 value={logoUrlInput}
@@ -186,7 +186,7 @@ const MacroModal: React.FC<ModalProps> = (props) => {
                             value={shortcutInput}
                             onBlur={() => setShortcutInvalid(checkIfShortcutInvalid())}
                         />
-                        <FormHelperText>This is the shortcut used to use this Engine on the homepage.</FormHelperText>
+                        <FormHelperText>This is the shortcut used to use this Macro on the homepage.</FormHelperText>
                         <FormErrorMessage>Invalid Shortcut! Should be a-z or 0-9</FormErrorMessage>
                     </FormControl>
 
